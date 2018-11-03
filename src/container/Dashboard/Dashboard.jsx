@@ -13,90 +13,74 @@ const routes = [
     {
         path: "Index",
         component: Loadable({
-            loader: () => import("~/container/Index/index"),
+            loader: () => import("~/container/Index/Index"),
             loading: MyLoadingComponent
         }),
         isExact: true
     },{
-        path: "Activity",
+        path: "Register",
         component: Loadable({
-            loader: () => import("~/container/Activity/Activity"),
+            loader: () => import("~/container/Index/register"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "ForgetPwd",
+        component: Loadable({
+            loader: () => import("~/container/Index/ForgetPwd"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "Login",
+        component: Loadable({
+            loader: () => import("~/container/Index/Login"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "MyInfo",
+        component: Loadable({
+            loader: () => import("~/container/MyInfo/MyInfo"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "MyRight",
+        component: Loadable({
+            loader: () => import("~/container/Index/component/MyRight"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "MyDeal",
+        component: Loadable({
+            loader: () => import("~/container/Index/component/MyDeal"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "MyEntrust",
+        component: Loadable({
+            loader: () => import("~/container/Index/component/MyEntrust"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "MyService",
+        component: Loadable({
+            loader: () => import("~/container/Index/component/MyService"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "StockPage",
+        component: Loadable({
+            loader: () => import("~/container/StockPage/StockPage"),
             loading: MyLoadingComponent
         }),
         isExact: false
     },
-    {
-        path: "PersonalInformation",
-        component: Loadable({
-            loader: () => import("~/container/PersonalInformation/PersonalInformation"),
-            loading: MyLoadingComponent
-        }),
-        isExact: false
-    },
-    {
-        path: "Setting",
-        component: Loadable({
-            loader: () => import("~/container/PersonalInformation/component/Setting"),
-            loading: MyLoadingComponent
-        }),
-        isExact: false
-    },
-    {
-        path: "NewHome/:id",
-        component: Loadable({
-            loader: () => import("~/container/NewHome/NewHome"),
-            loading: MyLoadingComponent
-        }),
-        isExact: false
-    },
-    {
-        path: "GameHome/:homeId",
-        component: Loadable({
-            loader: () => import("~/container/GameHome/GameHome"),
-            loading: MyLoadingComponent
-        }),
-        isExact: false
-    },
-    {
-        path: "MyFriend/:pageId",
-        component: Loadable({
-            loader: () => import("~/container/MyFriend/MyFriend"),
-            loading: MyLoadingComponent
-        }),
-        isExact: false
-    },
-    {
-        path: "PayPage",
-        component: Loadable({
-            loader: () => import("~/container/Index/PayPage/PayPage"),
-            loading: MyLoadingComponent
-        }),
-        isExact: false
-    },
-    {
-        path: "MyMedal",
-        component: Loadable({
-            loader: () => import("~/container/MyMedal/MyMedal"),
-            loading: MyLoadingComponent
-        }),
-        isExact: false
-    },
-    {
-        path: "RankList",
-        component: Loadable({
-            loader: () => import("~/container/RankList/RankList"),
-            loading: MyLoadingComponent
-        }),
-        isExact: false
-    },
-    {
-        path: "MyTask",
-        component: Loadable({
-            loader: () => import("~/container/MyTask/MyTask"),
-            loading: MyLoadingComponent
-        }),
-        isExact: false
-    }
 ];
 
 class Dashboard extends React.Component {
@@ -104,18 +88,18 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             count: 90,
-            isLogin:false,
+            // isLogin:false,
         };
     }
 
     componentDidMount(){
-        Api.getUserInfo().then((res) => {
-            console.log(res)
-        }).catch((err) => {
-            console.log(err)
-            window.location.href = "#/Dashboard/index"
-            // message.error(err.msg);
-        })
+        // Api.getUserInfo().then((res) => {
+        //     console.log(res)
+        // }).catch((err) => {
+        //     console.log(err)
+        //     window.location.href = "#/Dashboard/index"
+        //     // message.error(err.msg);
+        // })
     }
 
 
@@ -128,36 +112,36 @@ class Dashboard extends React.Component {
         // this.setState({count: this.state.count + result.movement});
     }
 
-    getWebSocket(){
-        let ws = new WebSocket("ws://www.10sgame.com:8282");
-        ws.onopen = ()=>{
-            let data = '{"type":"join_room","uid":1,"room_id":123456,"level_room":1}'
-            ws.send(data)
-        }
-        ws.onmessage = (e)=>{
-            let data = JSON.parse(e.data);
-            let userData = data.data?JSON.parse(data.data):null
-            let type = data.type || "";
-            switch (type) {
-                case "ping":
-
-                    break;
-
-                case 'active':
-                    let user_data = JSON.parse(data.data);
-
-                    break;
-
-                case 'leave':
-                    let user_datas = JSON.parse(data.data);
-
-                    break;
-                default:
-                    break;
-            }
-            console.log(data,userData)
-        }
-    }
+    // getWebSocket(){
+    //     let ws = new WebSocket("ws://www.10sgame.com:8282");
+    //     ws.onopen = ()=>{
+    //         let data = '{"type":"join_room","uid":1,"room_id":123456,"level_room":1}'
+    //         ws.send(data)
+    //     }
+    //     ws.onmessage = (e)=>{
+    //         let data = JSON.parse(e.data);
+    //         let userData = data.data?JSON.parse(data.data):null
+    //         let type = data.type || "";
+    //         switch (type) {
+    //             case "ping":
+    //
+    //                 break;
+    //
+    //             case 'active':
+    //                 let user_data = JSON.parse(data.data);
+    //
+    //                 break;
+    //
+    //             case 'leave':
+    //                 let user_datas = JSON.parse(data.data);
+    //
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
+    //         console.log(data,userData)
+    //     }
+    // }
 
     render() {
         // this.getWebSocket();

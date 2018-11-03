@@ -1,77 +1,47 @@
 import React from 'react';
 import {Form, Icon, Modal, Tabs, Input, Button, message, Badge} from "antd";
-import "./register.less"
+import "./Login.less"
 import connect from "react-redux/es/connect/connect";
 import Api from '~/until/api';
-
+//
 
 const FormItem = Form.Item;
-class  Register extends React.Component{
+class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            register:{
+            login:{
                 tel:null,
-                password:null,
-                newpassword:null,
-                code:null
+                password:null
             },
-            Register:[
-                {
-                    key:"username",
-                    name:"username",
-                    required:true,
-                    message:"请输入真实姓名",
-                    placeholder:"真实姓名",
-                    isOk:"",
-                    before:<Icon className="before-icon" type="user" theme="outlined" />,
-                    // re:/^1[34578]\d{9}$/,
-                },
+            loginForm:[
                 {
                     key:"tel",
                     name:"tel",
                     required:true,
-                    message:"请输入手机号码",
-                    placeholder:"手机号码",
-                    isOk:"",
+                    message:"请输入用户账号",
+                    placeholder:"用户账号",
                     before:<Icon className="before-icon" type="user" theme="outlined" />,
                     re:/^1[34578]\d{9}$/,
-                },
-                {
-                    key:"code",
-                    name:"code",
-                    required:true,
-                    message:"请输入验证码",
-                    placeholder:"短信验证码",
                     isOk:"",
-                    before:<Icon className="before-icon" type="safety-certificate" theme="outlined" />
                 },
                 {
                     key:"password",
-                    name:"password",
+                    name:"username",
                     required:true,
-                    message:"请输入交易密码（6~12位）",
+                    message:"请输入用户密码",
                     placeholder:"用户密码",
                     isOk:"",
                     before:<Icon className="before-icon" type="lock" theme="outlined" />
-                },
-                {
-                    key:"newpassword",
-                    name:"newpassword",
-                    required:true,
-                    message:"请确认网点编号",
-                    placeholder:"网点编号",
-                    isOk:"",
-                    before:<Icon className="before-icon" type="lock" theme="outlined" />
                 }
-            ],
-        }
+            ]
+        };
     }
 
     changeInput = (e, item, index, name1) => {
         let value =e.target.value;
-        let arr = this.state.Register;
-        let name2 = "Register";
+        let arr = this.state.loginForm;
+        let name2 = "loginForm";
         let name = item.key;
         let form = this.state[name1];
         if(item.re){
@@ -104,13 +74,16 @@ class  Register extends React.Component{
 
     render(){
         return(
-            <div className="register-wrap">
+            <div className="login-wrap">
                 <div className="header-login">
-                    <Icon type="left" theme="outlined" /><p>注册</p><a href="">登录</a>
+                    <Icon type="left" theme="outlined" /><p>登录</p><a href="">注册</a>
+                </div>
+                <div>
+                    <img src="" alt=""/>
                 </div>
                 <Form>
                     {
-                        this.state.Register.map((item, index)=>{
+                        this.state.loginForm.map((item, index)=>{
                             return <FormItem
                                 required
                                 hasFeedback
@@ -118,20 +91,15 @@ class  Register extends React.Component{
                                 help={item.isOk === "error"?item.message:null}
                                 key={index}
                             >
-                                {item.before}<Input type={item.key === "password"||item.key === "newpassword"?"password":"text"} className={item.key === "code"?"kaptchald":null}
-                                                    onChange={(e)=>this.changeInput(e,item,index,"register")}
+                                {item.before}<Input type={item.key === "password"?"password":"text"}
+                                                    onChange={(e)=>this.changeInput(e,item,index,"login")}
                                                     placeholder={item.placeholder}
                                                     id={item.isOk}/>
-                                {
-                                    item.key === "code"?
-                                        <Button onClick={()=>this.getKaptchald()} className="get-kaptchald" type="primary">获取验证码</Button>
-                                        :null
-                                }
                             </FormItem>
                         })
                     }
                     <FormItem>
-                        <Button onClick={()=>this.handleSubmit("Register")} className="check-button" type="primary">注册</Button>
+                        <Button onClick={()=>this.handleSubmit("loginForm")} onClick={()=>this.handleSubmit("loginForm")} className="check-button" type="primary">登录</Button>
                     </FormItem>
                 </Form>
             </div>
@@ -139,4 +107,9 @@ class  Register extends React.Component{
     }
 }
 
-export default Register
+// const mapStateToProps = state => {
+//     const {loginReducer,userInfo} = state;
+//     return {loginReducer,userInfo}
+// };
+// export default connect(mapStateToProps)(Login)
+export default Login

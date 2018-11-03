@@ -1,11 +1,11 @@
 import React from 'react';
 import {Form, Icon, Modal, Tabs, Input, Button, message, Badge} from "antd";
-import "./index.less"
+import "./ForgetPwd.less"
 import connect from "react-redux/es/connect/connect";
 import Api from '~/until/api';
 
 const FormItem = Form.Item;
-class Index extends React.Component {
+class ForgetPwd extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -87,3 +87,5 @@ class Index extends React.Component {
         )
     }
 }
+
+export default ForgetPwd

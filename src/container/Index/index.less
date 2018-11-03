@@ -1,0 +1,247 @@
+.index-wrap{
+  .ant-tabs-tabpane:nth-child(3){
+    width: 100vw;
+    height: 100vh;
+    background-color: #f1f1f1;
+  }
+  .optional-wrap{
+    .optional-header-container{
+      width: 100vw;
+      height: 10vw;
+      background-color: red;
+      color: white;
+      position: relative;
+      p{
+        height: 10vw;
+        line-height: 10vw;
+        font-size: 5vw;
+        text-align: center;
+        margin: 0;
+      }
+      .anticon-search{
+        font-size: 6vw;
+        position: absolute;
+        right: 5vw;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+    .optional-content-container{
+      .ant-table-wrapper{
+        .ant-table-tbody{
+          .ant-table-row{
+            color: black;
+            td:nth-child(2),td:nth-child(3){
+              color: red;
+            }
+          }
+        }
+      }
+    }
+  }
+  .market-wrap{
+    .market-header-container{
+      width: 100vw;
+      height: 10vw;
+      background-color: red;
+      color: white;
+      position: relative;
+      p{
+        height: 10vw;
+        line-height: 10vw;
+        text-align: center;
+      }
+      .ant-calendar-picker{
+        position: absolute;
+        right: 5vw;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20vw;
+        background-color: red;
+        border-radius: 5vw;
+        height: 6vw;
+        color: white;
+        border-color: white!important;
+        div{
+          height: 100%;
+          width: 100%;
+          .ant-calendar-picker-input{
+            width: 100%;
+            height: 100%;
+            background-color: red;
+            color: white!important;
+            border: 1px solid white;
+            border-radius: 5vw;
+          }
+        }
+        .ant-calendar-picker-icon{
+          color: white;
+        }
+        .ant-calendar-picker-container{
+          width: 20vw!important;
+        }
+      }
+    }
+    .market-content-container{
+      .ant-table-thead{
+        tr:first-child{
+          border-width: 0;
+          th{
+            //height: 5vw!important;
+            padding: 0!important;
+          }
+          th:first-child{
+            background-color: red;
+            color: white;
+          }
+          th:nth-child(2){
+            background-color: #8581df;
+          }
+          th:last-child{
+            background-color: #00c14c;
+            color: white;
+          }
+        }
+        tr:last-child{
+          th{
+            div{
+              text-align: center;
+            }
+            border-width: 0;
+          }
+          th:first-child,th:nth-child(2){
+            background-color: rgba(255,0,0,0.3);
+            color: red;
+          }
+          th:nth-child(3){
+            background-color: rgba(133,129,223,0.3);
+            color: #8581df;
+          }
+          th:last-child,th:nth-child(4){
+            background-color: rgba(0,193,76,0.3);
+            color: #00c14c;
+          }
+        }
+      }
+      .ant-table-tbody{
+        tr{
+          border-bottom: 1px solid #7f7f7f;
+          td:nth-child(1),td:nth-child(2){
+            color: red;
+          }
+          td:nth-child(3){
+            background-color: rgba(133,129,223,0.3);
+            color: #8581df;
+            border-color: rgba(133,129,223,0.3);
+          }
+          td:nth-child(4),td:nth-child(5){
+            color: #00c14c;
+          }
+        }
+      }
+    }
+  }
+  .deal-wrap{
+    .deal-header-container{
+      p{
+        height: 10vw;
+        line-height: 10vw;
+        text-align: center;
+        background-color: red;
+        color: white;
+        margin: 0;
+      }
+    }
+    .deal-content-container{
+      .my-deal{
+        width: 100vw;
+        height: 50vw;
+        padding: 5vw;
+        background-color: white;
+        margin-bottom: 5vw;
+        .deal-content{
+          width: 100%;
+          height: 100%;
+          background-color: red;
+          border-radius: 2vw;
+          p:first-child{
+            margin-bottom: 15vw;
+            height: 10vw;
+            line-height: 10vw;
+            padding-left: 10vw;
+            color: white;
+            .anticon-eye{
+              font-size: 5vw;
+              height: 10vw;
+              line-height: 10vw;
+              margin-right: 10vw;
+              float: right;
+            }
+          }
+          .my-deal-info{
+            .ant-row{
+              text-align: center;
+              .ant-col-8{
+                border-right: 1px dashed #ccc;
+                .ant-row{
+                  padding: 0;
+                }
+              }
+              .ant-col-8:last-child{
+                border-width: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+    .my-deal-operation-cpntainer{
+      width: 100vw;
+      height: 50vw;
+      padding: 0 5vw;
+      background-color: white;
+      .ant-row{
+        text-align: center;
+      }
+    }
+  }
+  .my-index-wrap{
+    .my-index-header-container{
+      width: 100vw;
+      height: 70vw;
+      background-color: red;
+      color: white;
+    }
+  }
+  .ant-tabs{
+    .ant-tabs-bar{
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      margin: 0;
+      background-color: white;
+      border-top: 0.5px solid #949494;
+      .ant-tabs-nav{
+        width: 100vw;
+        .ant-tabs-tab{
+          width: 25vw;
+          text-align: center;
+          margin: 0;
+        }
+        .ant-tabs-tab-active{
+          color: red;
+        }
+      }
+      .ant-tabs-ink-bar{
+        display: none!important;
+      }
+    }
+  }
+}
+//.market-date-picker{
+//  width: 20vw!important;
+//  .ant-calendar{
+//    width: 100%;
+//  }
+//}
