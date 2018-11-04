@@ -4,8 +4,8 @@ import MyLoadingComponent from "~/components/common/loadComponents";
 import Loadable from "react-loadable";
 import { connect } from "react-redux";
 import "./Dashboard.less";
+import 'moment/locale/zh-cn';
 import Api from '~/until/api';
-// import Websocket from 'react-websocket';
 import {message} from "antd";
 import {fetchPostsGetUser} from '~/action/getUserInfo';
 
@@ -77,6 +77,13 @@ const routes = [
         path: "StockPage",
         component: Loadable({
             loader: () => import("~/container/StockPage/StockPage"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "ContractSearch",
+        component: Loadable({
+            loader: () => import("~/container/ContractSearch/ContractSearch"),
             loading: MyLoadingComponent
         }),
         isExact: false

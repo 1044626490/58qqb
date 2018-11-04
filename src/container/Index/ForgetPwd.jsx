@@ -1,6 +1,6 @@
 import React from 'react';
 import {Form, Icon, Modal, Tabs, Input, Button, message, Badge} from "antd";
-import "./ForgetPwd.less"
+import "./register.less"
 import connect from "react-redux/es/connect/connect";
 import Api from '~/until/api';
 
@@ -53,13 +53,13 @@ class ForgetPwd extends React.Component {
 
     render(){
         return(
-            <div>
+            <div className="register-wrap">
                 <div className="header-login">
-                    <Icon type="left" theme="outlined" /><p>登录</p>
+                    <Icon type="left" theme="outlined" /><p>忘记密码</p>
                 </div>
                 <Form>
                     {
-                        this.state.Register.map((item, index)=>{
+                        this.state.forgetForm.map((item, index)=>{
                             return <FormItem
                                 required
                                 hasFeedback

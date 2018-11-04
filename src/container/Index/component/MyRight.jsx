@@ -1,5 +1,6 @@
 import React from "react"
 import { Icon, Button, Row, Col } from "antd"
+import "./MyRight.less"
 
 class MyRight extends React.Component{
     constructor(props) {
@@ -26,7 +27,7 @@ class MyRight extends React.Component{
                         </Row>
                     </div>
                     <div>
-                        <p>
+                        <p className="water-gold">
                             <span>权益金流水</span>
                             <Icon type="right" theme="outlined" />
                         </p>

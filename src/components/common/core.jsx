@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'fast-deep-equal';
 import { bind, clear } from 'size-sensor';
-import { pick } from '../commonjs/utils';
+import { pick } from './utils';
 
 export default class EchartsReactCore extends Component {
   constructor(props) {
@@ -118,7 +118,7 @@ export default class EchartsReactCore extends Component {
     }
   };
 
-  // render the dom
+  // render the do
   renderEchartDom = () => {
     // init the echart object
     const echartObj = this.getEchartsInstance();

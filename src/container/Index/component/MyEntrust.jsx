@@ -1,6 +1,7 @@
 import React from "react"
 import { Icon, Button, Row, Col, DatePicker, Tabs } from "antd"
 import moment from "moment";
+import "./MyEntrust.less"
 
 const { RangePicker } = DatePicker;
 const TabPane = Tabs.TabPane;
@@ -23,7 +24,7 @@ class MyEntrust extends React.Component{
                 <div className="my-entrust-content">
                     <Tabs activeKey={this.state.activeKey} onChange={(value)=>{this.setState({activeKey:value})}}>
                         <TabPane tab="委托中" key="1">
-                            <div>
+                            <div className="no-info">
                                 <img src={require("../../../layouts/image/noresume.png")} alt=""/>
                                 <p>暂无数据</p>
                             </div>
@@ -31,14 +32,31 @@ class MyEntrust extends React.Component{
                         <TabPane tab="已成交" key="2">
                             <ul>
                                 <li>
-                                    <Row><Col span={6}>合约卖出</Col><Col span={10}>50ETF沽11月2200</Col><Col span={8}>10001500</Col></Row>
+                                    <Row><Col className="sale-name" span={6}>合约卖出</Col><Col span={10}>50ETF沽11月2200</Col><Col span={8}>10001500</Col></Row>
                                     <Row>
                                         <Col span={6}>
                                             <p>2018-11-02</p>
                                             <p>13:39:25</p>
                                         </Col>
                                         <Col span={10}>
-                                            <p>0.0035</p>
+                                            <p className="deal-price">0.0035</p>
+                                            <p>成交均价</p>
+                                        </Col>
+                                        <Col span={8}>
+                                            <p>1</p>
+                                            <p>委托数量</p>
+                                        </Col>
+                                    </Row>
+                                </li>
+                                <li>
+                                    <Row><Col className="sale-name" span={6}>合约卖出</Col><Col span={10}>50ETF沽11月2200</Col><Col span={8}>10001500</Col></Row>
+                                    <Row>
+                                        <Col span={6}>
+                                            <p>2018-11-02</p>
+                                            <p>13:39:25</p>
+                                        </Col>
+                                        <Col span={10}>
+                                            <p className="deal-price">0.0035</p>
                                             <p>成交均价</p>
                                         </Col>
                                         <Col span={8}>

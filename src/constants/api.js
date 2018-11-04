@@ -3,12 +3,12 @@
  * api请求的地址常量
  * */
 export const GET_LOGIN_CAPTCHA = '/login/captcha';
-export const LOGIN = '/login';//登录
-export const REGISTER = '/register';//注册
-export const SEND_VERIFI_CODE = '/send_verifi_code';//获取验证码
+export const LOGIN = '/api/login/login';//登录
+export const REGISTER = '/api/login/register';//注册
+export const SEND_VERIFI_CODE = '/api/login/send_verifi_code';//获取验证码
 export const GET_LEADER_BOARD = '/leaderboard';//查看排行榜
 export const GET_USER_MEDAL = '/user_medal';//个人勋章列表
-export const GET_USER_INFO = '/user_info';//个人勋章列表
+export const GET_USER_INFO = 'api/user/user_info';//个人勋章列表
 export const EDIT_USERNAME = '/edit_username';//个人勋章列表
 export const COUPON = '/coupon';//活动页优惠券
 export const JOIN_ROOM_ID = '/join_room_id';//加入房间

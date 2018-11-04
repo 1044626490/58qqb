@@ -1,0 +1,99 @@
+.my-deal-wrap{
+  width: 100vw;
+  height: 100vh;
+  background-color: #e9e9e9;
+  .my-deal-header{
+    height: 10vw;
+    line-height: 10vw;
+    position: relative;
+    background-color: red;
+    border-bottom: 1px solid #d3d3d3;
+    color: white;
+    .anticon-left{
+      position: absolute;
+      left: 5vw;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 6vw;
+    }
+    .anticon-sync{
+      position: absolute;
+      right: 5vw;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 6vw;
+    }
+    p{
+      text-align: center;
+      font-size: 5vw;
+    }
+  }
+  .deal-content-header{
+    white-space: nowrap;
+    height: 10vw;
+    line-height: 10vw;
+    width: 100vw;
+    background-color: white;
+    p{
+      white-space: normal;
+    }
+    p>span:first-child{
+      padding: 0 2vw;
+      font-size: 3vw;
+    }
+    .date-picker-wrap-content{
+
+      display: inline-block;
+      width: 67vw;
+    }
+    .ant-calendar-picker{
+      width: 32vw;
+      .ant-calendar-picker-input{
+        height: 6vw;
+        line-height: 6vw;
+        border-radius: 3vw;
+      }
+    }
+    .ant-btn{
+      width: 15vw;
+      height: 6vw;
+      line-height: 6vw;
+      color: red;
+      border: 1px solid red;
+      border-radius: 3vw;
+      padding: 0;
+      text-align: center;
+
+    }
+  }
+  ul{
+    list-style: none;
+    padding: 0;
+    li{
+      text-align: center;
+      background-color: white;
+      margin-bottom: 3vw;
+      p{
+        margin: 0;
+        height: 6vw;
+        line-height: 6vw;
+      }
+      .sale-name{
+        color: red;
+        margin-bottom: 3vw;
+      }
+      .deal-price{
+        color: #4f97d3;
+      }
+      >.ant-row:first-child{
+        text-align: center;
+        border-bottom: 1px solid #ccc;
+        //>.ant-row:first-child{
+        //  .ant-col-6{
+        //    //color: red;
+        //  }
+        //}
+      }
+    }
+  }
+}

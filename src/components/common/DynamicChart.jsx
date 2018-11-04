@@ -14,13 +14,12 @@ export default class Dynamic extends Component {
     fetchNewDate = () => {
         let axisData = (new Date()).toLocaleTimeString().replace(/^\D*/,'');
         const option = cloneDeep(this.state.option); // immutable
-        option.title.text = 'Hello Echarts-for-react.' + new Date().getSeconds();
         let data0 = option.series[0].data;
         let data1 = option.series[1].data;
         data0.shift();
-        data0.push(Math.round(Math.random() * 1000));
+        data0.push(Math.round(Math.random()));
         data1.shift();
-        data1.push((Math.random() * 10 + 5).toFixed(1) - 0);
+        data1.push((Math.random()*39).toFixed(2)/100);
 
         option.xAxis[0].data.shift();
         option.xAxis[0].data.push(axisData);
@@ -46,9 +45,6 @@ export default class Dynamic extends Component {
     };
 
     getOption = () => ({
-        title: {
-            text:'Hello Echarts-for-react.',
-        },
         tooltip: {
             trigger: 'axis'
         },
@@ -56,7 +52,7 @@ export default class Dynamic extends Component {
             data:['最新成交价', '预购队列']
         },
         toolbox: {
-            show: true,
+            show: false,
             feature: {
                 dataView: {readOnly: false},
                 restore: {},
@@ -114,18 +110,21 @@ export default class Dynamic extends Component {
             {
                 type: 'value',
                 scale: true,
-                name: '价格',
-                max: 20,
+                name: '',
+                max: 0.39,
                 min: 0,
                 boundaryGap: [0.2, 0.2]
             },
             {
                 type: 'value',
                 scale: true,
-                name: '预购量',
-                max: 1200,
+                name: '',
+                max: 1,
                 min: 0,
-                boundaryGap: [0.2, 0.2]
+                boundaryGap: [0.2, 0.2],
+                axisLable:{
+                    formatter:'{value}(%)'
+                }
             }
         ],
         series: [
@@ -150,7 +149,7 @@ export default class Dynamic extends Component {
                     let res = [];
                     let len = 50;
                     while (len--) {
-                        res.push(Math.round(Math.random() * 1000));
+                        res.push(Math.random());
                     }
                     return res;
                 })()
@@ -162,7 +161,7 @@ export default class Dynamic extends Component {
                     let res = [];
                     let len = 0;
                     while (len < 50) {
-                        res.push((Math.random()*10 + 5).toFixed(1) - 0);
+                        res.push((Math.random()*39).toFixed(2)/100);
                         len++;
                     }
                     return res;
@@ -172,18 +171,13 @@ export default class Dynamic extends Component {
     });
 
     render() {
-        let code = "<ReactEcharts ref='echartsInstance' \n" +
-            "  option={this.state.option} />\n";
         return (
             <div className='examples'>
                 <div className='parent'>
-                    <label> use React state to render dynamic chart</label>
                     <ReactEcharts ref='echarts_react'
                                   option={this.state.option}
                                   style={{height: 400}} />
-                    <label> code below: use state of react to render dynamic chart</label>
                     <pre>
-            <code>{code}</code>
           </pre>
                 </div>
             </div>

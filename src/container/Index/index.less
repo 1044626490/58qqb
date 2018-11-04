@@ -6,6 +6,7 @@
   }
   .optional-wrap{
     .optional-header-container{
+      font-size: 5vw;
       width: 100vw;
       height: 10vw;
       background-color: red;
@@ -27,10 +28,25 @@
       }
     }
     .optional-content-container{
+      .ant-table-thead{
+        height: 8vw;
+        line-height: 8vw;
+        th{
+          padding: 0;
+          text-align: center;
+          background-color: #e9e9e9;
+        }
+      }
       .ant-table-wrapper{
         .ant-table-tbody{
+          line-height: 12vw;
+          height: 12vw;
           .ant-table-row{
             color: black;
+            td{
+              padding: 0;
+              text-align: center;
+            }
             td:nth-child(2),td:nth-child(3){
               color: red;
             }
@@ -41,6 +57,7 @@
   }
   .market-wrap{
     .market-header-container{
+      font-size: 5vw;
       width: 100vw;
       height: 10vw;
       background-color: red;
@@ -83,6 +100,23 @@
       }
     }
     .market-content-container{
+      .now-market-info{
+        font-size: 0;
+        height: 10vw;
+        line-height: 10vw;
+        span{
+          height: 10vw;
+          line-height: 10vw;
+          width: 33.33vw;
+          display: inline-block;
+          font-size: 3vw;
+          text-align: center;
+          i{
+            color: red;
+            font-style: normal;
+          }
+        }
+      }
       .ant-table-thead{
         tr:first-child{
           border-width: 0;
@@ -124,6 +158,12 @@
         }
       }
       .ant-table-tbody{
+        line-height: 8vw;
+        height: 8vw;
+        td{
+          text-align: center;
+          padding: 0;
+        }
         tr{
           border-bottom: 1px solid #7f7f7f;
           td:nth-child(1),td:nth-child(2){
@@ -142,7 +182,11 @@
     }
   }
   .deal-wrap{
+    width: 100vw;
+    height: 100vh;
+    background-color: #e9e9e9;
     .deal-header-container{
+      font-size: 5vw;
       p{
         height: 10vw;
         line-height: 10vw;
@@ -179,10 +223,11 @@
             }
           }
           .my-deal-info{
+            color: white;
             .ant-row{
               text-align: center;
               .ant-col-8{
-                border-right: 1px dashed #ccc;
+                border-right: 1px dashed white;
                 .ant-row{
                   padding: 0;
                 }
@@ -206,11 +251,93 @@
     }
   }
   .my-index-wrap{
+    width: 100vw;
+    height: 100vh;
+    background-color: #e9e9e9;
     .my-index-header-container{
       width: 100vw;
       height: 70vw;
       background-color: red;
       color: white;
+      position: relative;
+      p:first-child{
+        padding-top: 5vw;
+      }
+      p{
+        text-align: center;
+        position: relative;
+        .anticon-setting{
+          font-size: 6vw;
+          position: absolute;
+          right: 5vw;
+        }
+        .ant-avatar{
+          width: 20vw;
+          height: 20vw;
+          margin-top: 5vw;
+          img{
+            width: 20vw;
+            height: 20vw;
+          }
+        }
+      }
+      p:nth-child(3),p:nth-child(4){
+        padding: 0;
+        margin: 0;
+      }
+      p:nth-child(4){
+        margin-bottom: 5vw;
+      }
+      .my-info{
+        position: absolute;
+        bottom: 0;
+        left: 5%;
+        width: 90%;
+      }
+      .ant-col-8:first-child,.ant-col-8:nth-child(2){
+        border-right: 1px dashed #ffffff;
+      }
+    }
+    .my-info-operation-content{
+      ul{
+        background-color: white;
+        margin-top: 3vw;
+        list-style: none;
+        padding: 0;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        li{
+          font-size: 4vw;
+          width: 100vw;
+          line-height: 12vw;
+          height: 12vw;
+          p{
+            height: 12vw;
+            line-height: 12vw;
+            width: 85%;
+            float: right;
+            border-bottom: 1px solid #ccc;
+            margin: 0;
+            .anticon-right{
+              float: right;
+              font-size: 4vw;
+              height: 13vw;
+              line-height: 13vw;
+              margin-right: 3vw;
+              //position: absolute;
+            }
+            span{
+              margin-right: 1vw;
+              float: right;
+            }
+          }
+        }
+        li:last-child{
+          p{
+            border-width: 0;
+          }
+        }
+      }
     }
   }
   .ant-tabs{

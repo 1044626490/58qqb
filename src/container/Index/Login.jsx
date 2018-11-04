@@ -11,13 +11,13 @@ class Login extends React.Component {
         super(props);
         this.state = {
             login:{
-                tel:null,
+                mobile:null,
                 password:null
             },
             loginForm:[
                 {
-                    key:"tel",
-                    name:"tel",
+                    key:"mobile",
+                    name:"mobile",
                     required:true,
                     message:"请输入用户账号",
                     placeholder:"用户账号",
@@ -27,7 +27,7 @@ class Login extends React.Component {
                 },
                 {
                     key:"password",
-                    name:"username",
+                    name:"password",
                     required:true,
                     message:"请输入用户密码",
                     placeholder:"用户密码",
@@ -72,14 +72,24 @@ class Login extends React.Component {
         })
     };
 
+    handleSubmit(){
+        Api.login(this.state.login).then((res) => {
+            console.log(res)
+            message.success(res.msg)
+        }).catch((err) => {
+            message.error(err.msg)
+        })
+    }
+
     render(){
         return(
             <div className="login-wrap">
                 <div className="header-login">
-                    <Icon type="left" theme="outlined" /><p>登录</p><a href="">注册</a>
+                    <Icon type="left" theme="outlined" /><p>登录</p><a onClick={()=>{window.location.href = "#/Dashboard/Register"}}>注册</a>
                 </div>
-                <div>
+                <div className="app-icon">
                     <img src="" alt=""/>
+                    <p><span>58</span>期权宝</p>
                 </div>
                 <Form>
                     {
@@ -102,6 +112,10 @@ class Login extends React.Component {
                         <Button onClick={()=>this.handleSubmit("loginForm")} onClick={()=>this.handleSubmit("loginForm")} className="check-button" type="primary">登录</Button>
                     </FormItem>
                 </Form>
+                <p className="login-forget-pwd">
+                    <br/>
+                    <a onClick={()=>{window.location.href = "#/Dashboard/ForgetPwd"}}>忘记密码?</a>
+                </p>
             </div>
         )
     }

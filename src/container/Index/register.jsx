@@ -11,15 +11,16 @@ class  Register extends React.Component{
         super(props);
         this.state = {
             register:{
-                tel:null,
+                name:null,
+                mobile:null,
                 password:null,
-                newpassword:null,
+                wd:null,
                 code:null
             },
             Register:[
                 {
-                    key:"username",
-                    name:"username",
+                    key:"name",
+                    name:"name",
                     required:true,
                     message:"请输入真实姓名",
                     placeholder:"真实姓名",
@@ -28,13 +29,13 @@ class  Register extends React.Component{
                     // re:/^1[34578]\d{9}$/,
                 },
                 {
-                    key:"tel",
-                    name:"tel",
+                    key:"mobile",
+                    name:"mobile",
                     required:true,
                     message:"请输入手机号码",
                     placeholder:"手机号码",
                     isOk:"",
-                    before:<Icon className="before-icon" type="user" theme="outlined" />,
+                    before:<Icon type="tablet" theme="outlined" />,
                     re:/^1[34578]\d{9}$/,
                 },
                 {
@@ -56,13 +57,13 @@ class  Register extends React.Component{
                     before:<Icon className="before-icon" type="lock" theme="outlined" />
                 },
                 {
-                    key:"newpassword",
-                    name:"newpassword",
+                    key:"wd",
+                    name:"wd",
                     required:true,
                     message:"请确认网点编号",
                     placeholder:"网点编号",
                     isOk:"",
-                    before:<Icon className="before-icon" type="lock" theme="outlined" />
+                    before:<Icon type="profile" theme="outlined" />
                 }
             ],
         }
@@ -89,24 +90,46 @@ class  Register extends React.Component{
                 arr[index].isOk = "success";
             }
         }
-        if(item.key === "newpassword"){
-            if(value !== this.state.register.password){
-                arr[index].isOk = "error";
-            }else {
-                arr[index].isOk = "success";
-            }
-        }
         this.setState({
             [name2]:arr,
             [name1]:form
         })
     };
 
+    getKaptchald(){
+        console.log(12123);
+        Api.sendVerifiCode({mobile:this.state.register.mobile}).then((res)=>{
+            message.success(res.msg)
+        }).catch((err) => {
+            message.error(err.msg)
+        })
+    }
+
+    handleSubmit(){
+        let count = 0;
+        this.state.Register.map((item, index)=>{
+            if(item.isOk === "error"){
+                count ++
+            }
+        });
+        if(count > 0){
+            message.error("信息填写错误");
+            return false
+        }else {
+            Api.register(this.state.register).then((res) => {
+                console.log(res)
+                message.success(res.msg)
+            }).catch((err) => {
+                message.error(err.msg)
+            })
+        }
+    }
+
     render(){
         return(
             <div className="register-wrap">
                 <div className="header-login">
-                    <Icon type="left" theme="outlined" /><p>注册</p><a href="">登录</a>
+                    <Icon type="left" theme="outlined" /><p>注册</p><a onClick={()=>{window.location.href = "#/Dashboard/Login"}}>登录</a>
                 </div>
                 <Form>
                     {
@@ -118,7 +141,7 @@ class  Register extends React.Component{
                                 help={item.isOk === "error"?item.message:null}
                                 key={index}
                             >
-                                {item.before}<Input type={item.key === "password"||item.key === "newpassword"?"password":"text"} className={item.key === "code"?"kaptchald":null}
+                                {item.before}<Input type={item.key === "password"||item.key === "wd"?"password":"text"} className={item.key === "code"?"kaptchald":null}
                                                     onChange={(e)=>this.changeInput(e,item,index,"register")}
                                                     placeholder={item.placeholder}
                                                     id={item.isOk}/>
@@ -134,6 +157,9 @@ class  Register extends React.Component{
                         <Button onClick={()=>this.handleSubmit("Register")} className="check-button" type="primary">注册</Button>
                     </FormItem>
                 </Form>
+                <p className="register-tips">
+                    温馨提示：网点编号可向你的商务经理获取
+                </p>
             </div>
         )
     }

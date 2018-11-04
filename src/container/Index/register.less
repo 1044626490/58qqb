@@ -1,0 +1,78 @@
+.register-wrap {
+  text-align: center;
+  .header-login {
+    height: 10vw;
+    line-height: 10vw;
+    position: relative;
+    border-bottom: 1px solid #d3d3d3;
+    .anticon-left {
+      position: absolute;
+      left: 5vw;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 4vw;
+    }
+    p {
+      text-align: center;
+      font-size: 4vw;
+    }
+    a {
+      font-size: 3vw;
+      color: red;
+      position: absolute;
+      right: 5vw;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  .ant-form{
+    .ant-row{
+      text-align: center;
+      margin-bottom: 0;
+      .ant-input,.ant-input:focus,.ant-input:hover{
+        width: 95%;
+        padding-left: 12vw;
+        border-width: 0;
+        border-bottom: 1px solid #ccc;
+      }
+      .anticon{
+        color: #b4b4b4;
+        position: absolute;
+        left: 4vw;
+        font-size: 5vw;
+        z-index: 999;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .get-kaptchald{
+        position: absolute;
+        height: 6vw;
+        line-height: 6vw;
+        background-color: white;
+        color: red;
+        border: 1px solid red;
+        border-radius: 3.5vw;
+        font-size: 3vw;
+        right: 5vw;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .ant-btn:not(.get-kaptchald){
+        margin-top: 5vw;
+        width: 95%;
+        background-color: red;
+        color: white;
+        border-width: 0;
+        height: 10vw;
+        line-height: 10vw;
+        border-radius: 3vw;
+      }
+    }
+  }
+  .register-tips{
+    margin-top: 4vw;
+    text-align: center;
+    font-size: 3vw;
+    color: #919191;
+  }
+}
