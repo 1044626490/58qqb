@@ -55,7 +55,7 @@ class ForgetPwd extends React.Component {
         return(
             <div className="register-wrap">
                 <div className="header-login">
-                    <Icon type="left" theme="outlined" /><p>忘记密码</p>
+                    <Icon  onClick={()=>{window.history.go(-1)}} type="left" theme="outlined" /><p>忘记密码</p>
                 </div>
                 <Form>
                     {

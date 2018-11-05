@@ -1,10 +1,12 @@
 import React from "react"
-import { Icon, Button } from "antd"
+import { Icon, Button, Avatar } from "antd"
+import "./MyInfo.less"
 
 class MyInfo extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+
 
         }
     }
@@ -17,16 +19,16 @@ class MyInfo extends React.Component{
                     <p>个人资料</p>
                 </div>
                 <div className="info-my-content">
-                    <table>
-                        <tbody>
-                        <tr><td>头像</td><td><img src="" alt=""/></td><td><Icon type="right" theme="outlined" /></td></tr>
-                        <tr><td>昵称</td><td>廖家德</td><td><Icon type="right" theme="outlined" /></td></tr>
-                        <tr><td>交易账号</td><td>128812091</td><td><Icon type="right" theme="outlined" /></td></tr>
-                        <tr><td>昵称</td><td>廖家德</td><td><Icon type="right" theme="outlined" /></td></tr>
-                        <tr><td>昵称</td><td>廖家德</td><td><Icon type="right" theme="outlined" /></td></tr>
-                        <tr><td>昵称</td><td>廖家德</td><td><Icon type="right" theme="outlined" /></td></tr>
-                        </tbody>
-                    </table>
+                    {/*<table>*/}
+                        <ul>
+                            <li><span>头像</span><span><img src="" alt=""/></span><span><Avatar size="large" icon="user" /></span></li>
+                            <li><span>昵称</span><span><i>廖家德</i><Icon type="right" theme="outlined" /></span></li>
+                            <li><span>交易账号</span><span><i>128812091</i><Icon type="right" theme="outlined" /></span></li>
+                            <li><span>昵称</span><span><i>廖家德</i><Icon type="right" theme="outlined" /></span></li>
+                            <li><span>昵称</span><span><i>廖家德</i><Icon type="right" theme="outlined" /></span></li>
+                            <li><span>昵称</span><span><i>廖家德</i><Icon type="right" theme="outlined" /></span></li>
+                        </ul>
+                    {/*</table>*/}
                     <Button>退出登录</Button>
                 </div>
             </div>

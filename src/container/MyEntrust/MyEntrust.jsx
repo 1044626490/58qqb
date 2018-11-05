@@ -17,7 +17,7 @@ class MyEntrust extends React.Component{
         return(
             <div className="my-entrust-wrap">
                 <div className="my-entrust-header">
-                    <Icon type="left" theme="outlined" />
+                    <Icon  onClick={()=>{window.history.go(-1)}} type="left" theme="outlined" />
                     <p>我的委托</p>
                     <Icon type="sync" theme="outlined" />
                 </div>
@@ -25,7 +25,7 @@ class MyEntrust extends React.Component{
                     <Tabs activeKey={this.state.activeKey} onChange={(value)=>{this.setState({activeKey:value})}}>
                         <TabPane tab="委托中" key="1">
                             <div className="no-info">
-                                <img src={require("../../../layouts/image/noresume.png")} alt=""/>
+                                <img src={require("../../layouts/image/noresume.png")} alt=""/>
                                 <p>暂无数据</p>
                             </div>
                         </TabPane>
@@ -69,7 +69,7 @@ class MyEntrust extends React.Component{
                         </TabPane>
                         <TabPane tab="已撤单" key="3">
                             <div>
-                                <img src={require("../../../layouts/image/noresume.png")} alt=""/>
+                                <img src={require("../../layouts/image/noresume.png")} alt=""/>
                                 <p>暂无数据</p>
                             </div>
                         </TabPane>

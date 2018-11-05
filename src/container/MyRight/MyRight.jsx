@@ -14,7 +14,7 @@ class MyRight extends React.Component{
         return(
             <div className="my-right-wrap">
                 <div className="my-right-header">
-                    <Icon type="left" theme="outlined" />
+                    <Icon  onClick={()=>{window.history.go(-1)}} type="left" theme="outlined" />
                     <p>我的权益</p>
                 </div>
                 <div className="my-right-container">

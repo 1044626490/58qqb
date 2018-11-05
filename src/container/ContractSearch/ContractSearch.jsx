@@ -16,7 +16,7 @@ class ContractSearch extends React.Component{
         return(
             <div className="contract-search-wrap">
                 <div className="stock-page-header">
-                    <Icon type="left" theme="outlined" />
+                    <Icon  onClick={()=>{window.history.go(-1)}} type="left" theme="outlined" />
                     <p>合约搜索</p>
                 </div>
                 <div className="contract-search-content">

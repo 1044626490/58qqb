@@ -3,6 +3,7 @@ import {Tabs, Icon, Table, DatePicker, Divider, Col, Row, Avatar} from 'antd';
 import connect from "react-redux/es/connect/connect";
 import {fetchPostsGetUser} from '~/action/getUserInfo';
 import "./Index.less"
+import moment from "moment";
 
 const { MonthPicker } = DatePicker;
 const TabPane = Tabs.TabPane;
@@ -10,20 +11,20 @@ class Index extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            activeKey:"1",
+            activeKey:this.props.activeKey,
             date:"",
-            userInfo:[]
+            userInfo:[],
+            now:new Date()
         }
     }
 
     componentDidMount(){
         this.props.dispatch(fetchPostsGetUser()).then(res =>{
-            console.log(res)
             this.setState({
                 userInfo:res.data
             })
         }).catch(err => {
-            console.log(err)
+            window.location.href = "#/Dashboard/Login"
         })
     }
 
@@ -185,16 +186,17 @@ class Index extends React.Component{
                 ]
             }
             ]
-        const userInfo = this.state.userInfo
+        const userInfo = this.state.userInfo;
+        let now = this.state.now;
         return(
             <div className="index-wrap">
-                <Tabs animated={false} activeKey={this.state.activeKey} onChange={(value)=>{this.setState({activeKey:value})}}>
+                <Tabs animated={false} activeKey={this.state.activeKey} onChange={this.props.onChange}>
                     {/*<TabPane tab={<span><Icon type="apple" />Tab 1</span>} key="1">*/}
                     <TabPane tab="自选" key="1">
                         <div className="optional-wrap">
                             <div className="optional-header-container">
                                 <p>自选</p>
-                                <Icon type="search" theme="outlined" />
+                                <Icon onClick={()=>{window.location.href = "#/Dashboard/ContractSearch"}} type="search" theme="outlined" />
                             </div>
                             <div className="optional-content-container">
                                 <Table
@@ -220,7 +222,9 @@ class Index extends React.Component{
                         <div className="market-wrap">
                             <div className="market-header-container">
                                 <p>行情</p>
-                                <MonthPicker dropdownClassName="market-date-picker" onChange={null} placeholder="11月" format="MM月"/>
+                                <MonthPicker dropdownClassName="market-date-picker" onChange={(value)=>{this.setState({now:value})}}
+                                             value={moment(now,"MM月")}
+                                             format="MM月"/>
                             </div>
                             <div className="market-content-container">
                                 <div>
@@ -251,13 +255,13 @@ class Index extends React.Component{
                                         <p>
                                             <span>交易账号：{userInfo.up_uid}</span><Icon type="eye" theme="outlined" />
                                         </p>
-                                        <p className="my-deal-info">
+                                        <div className="my-deal-info">
                                             <Row>
                                                 <Col span={8}><Row>总权益</Row><Row>{userInfo.bal >= 0?userInfo.bal.toFixed(2):""}</Row></Col>
                                                 <Col span={8}><Row>持仓市值</Row><Row>{userInfo.bal >= 0?(userInfo.bal-userInfo.aval).toFixed(2):""}</Row></Col>
                                                 <Col span={8}><Row>持仓盈号</Row><Row>{userInfo.aval >= 0?userInfo.aval.toFixed(2):""}</Row></Col>
                                             </Row>
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -290,21 +294,29 @@ class Index extends React.Component{
                                 <p><Avatar size={64} icon="user" src={userInfo.avatar||""} /></p>
                                 <p><span>{userInfo.up_uid||""}</span></p>
                                 <p><span>{userInfo.name||""}</span></p>
-                                <p className="my-info">
+                                <div className="my-info">
                                     <Row>
                                         <Col span={8}><Row>总权益</Row><Row>{userInfo.bal >= 0?userInfo.bal.toFixed(2):""}</Row></Col>
                                         <Col span={8}><Row>持仓市值</Row><Row>{userInfo.bal >= 0?(userInfo.bal-userInfo.aval).toFixed(2):""}</Row></Col>
-                                        <Col span={8}><Row>持仓盈号</Row><Row>{userInfo.aval >= 0?userInfo.aval.toFixed(2):""}</Row></Col>
+                                        <Col span={8}><Row>可用权益</Row><Row>{userInfo.aval >= 0?userInfo.aval.toFixed(2):""}</Row></Col>
                                     </Row>
-                                </p>
+                                </div>
                             </div>
                             <div className="my-info-operation-content">
                                 <ul>
-                                    <li onClick={()=>{window.location.href = "#/Dashboard/MyRight"}}><p>我的权益<Icon type="right" theme="outlined" /></p></li>
-                                    <li onClick={()=>{window.location.href = "#/Dashboard/MyDeal"}}><p>我的成交<Icon type="right" theme="outlined" /></p></li>
-                                    <li onClick={()=>{window.location.href = "#/Dashboard/MyEntrust"}}><p>我的委托<Icon type="right" theme="outlined" /></p></li>
-                                    <li><p>我的客服<Icon type="right" theme="outlined" /></p></li>
-                                    <li><p>版本号<Icon type="right" theme="outlined" /><span>v1.0.9</span></p></li>
+                                    <li onClick={()=>{window.location.href = "#/Dashboard/MyRight"}}>
+                                        <Icon type="dollar" theme="outlined" />
+                                        <p>我的权益<Icon type="right" theme="outlined" /></p></li>
+                                    <li onClick={()=>{window.location.href = "#/Dashboard/MyDeal"}}>
+                                        <Icon type="file-done" theme="outlined" />
+                                        <p>我的成交<Icon type="right" theme="outlined" /></p></li>
+                                    <li onClick={()=>{window.location.href = "#/Dashboard/MyEntrust"}}>
+                                        <Icon type="team" theme="outlined" />
+                                        <p>我的委托<Icon type="right" theme="outlined" /></p></li>
+                                    <li><Icon type="mobile" theme="outlined" />
+                                        <p>我的客服<Icon type="right" theme="outlined" /></p></li>
+                                    <li><Icon type="check-circle" theme="outlined" />
+                                        <p>版本号<span>v1.0.9</span></p></li>
                                 </ul>
                             </div>
                         </div>

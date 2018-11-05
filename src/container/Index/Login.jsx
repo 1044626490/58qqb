@@ -74,8 +74,8 @@ class Login extends React.Component {
 
     handleSubmit(){
         Api.login(this.state.login).then((res) => {
-            console.log(res)
             message.success(res.msg)
+            window.location.href = "#/Dashboard/index"
         }).catch((err) => {
             message.error(err.msg)
         })

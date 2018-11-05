@@ -15,7 +15,7 @@ class MyService extends React.Component{
         return(
             <div className="my-service-wrap">
                 <div className="my-service-header">
-                    <Icon type="left" theme="outlined" />
+                    <Icon  onClick={()=>{window.history.go(-1)}} type="left" theme="outlined" />
                     <p>我的客服</p>
                     <Icon type="sync" theme="outlined" />
                 </div>

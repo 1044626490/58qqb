@@ -61,7 +61,7 @@ class MyDeal extends React.Component{
         return(
             <div className="my-deal-wrap">
                 <div className="my-deal-header">
-                    <Icon type="left" theme="outlined" />
+                    <Icon  onClick={()=>{window.history.go(-1)}} type="left" theme="outlined" />
                     <p>我的成交</p>
                     <Icon type="sync" theme="outlined" />
                 </div>

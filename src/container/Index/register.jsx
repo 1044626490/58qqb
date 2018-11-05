@@ -97,7 +97,6 @@ class  Register extends React.Component{
     };
 
     getKaptchald(){
-        console.log(12123);
         Api.sendVerifiCode({mobile:this.state.register.mobile}).then((res)=>{
             message.success(res.msg)
         }).catch((err) => {
@@ -117,8 +116,8 @@ class  Register extends React.Component{
             return false
         }else {
             Api.register(this.state.register).then((res) => {
-                console.log(res)
                 message.success(res.msg)
+                window.location.href = "#/Dashboard/Lgoin"
             }).catch((err) => {
                 message.error(err.msg)
             })
@@ -129,7 +128,8 @@ class  Register extends React.Component{
         return(
             <div className="register-wrap">
                 <div className="header-login">
-                    <Icon type="left" theme="outlined" /><p>注册</p><a onClick={()=>{window.location.href = "#/Dashboard/Login"}}>登录</a>
+                    <Icon  onClick={()=>{window.history.go(-1)}} type="left" theme="outlined" />
+                    <p>注册</p><a onClick={()=>{window.location.href = "#/Dashboard/Login"}}>登录</a>
                 </div>
                 <Form>
                     {

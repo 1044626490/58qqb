@@ -14,10 +14,13 @@ const routes = [
         path: "Index",
         component: Loadable({
             loader: () => import("~/container/Index/Index"),
-            loading: MyLoadingComponent
+            loading: MyLoadingComponent,
         }),
+        contextTypes:{
+            changeTabs:(value)=>{this.setState({activityKey:value})}
+        },
         isExact: true
-    },{
+        },{
         path: "Register",
         component: Loadable({
             loader: () => import("~/container/Index/register"),
@@ -48,28 +51,28 @@ const routes = [
     },{
         path: "MyRight",
         component: Loadable({
-            loader: () => import("~/container/Index/component/MyRight"),
+            loader: () => import("~/container/MyRight/MyRight"),
             loading: MyLoadingComponent
         }),
         isExact: false
     },{
         path: "MyDeal",
         component: Loadable({
-            loader: () => import("~/container/Index/component/MyDeal"),
+            loader: () => import("~/container/MyDeal/MyDeal"),
             loading: MyLoadingComponent
         }),
         isExact: false
     },{
         path: "MyEntrust",
         component: Loadable({
-            loader: () => import("~/container/Index/component/MyEntrust"),
+            loader: () => import("~/container/MyEntrust/MyEntrust"),
             loading: MyLoadingComponent
         }),
         isExact: false
     },{
         path: "MyService",
         component: Loadable({
-            loader: () => import("~/container/Index/component/MyService"),
+            loader: () => import("~/container/MyService/MyService"),
             loading: MyLoadingComponent
         }),
         isExact: false
@@ -95,15 +98,14 @@ class Dashboard extends React.Component {
         super(props);
         this.state = {
             count: 90,
+            activityKey:"1"
             // isLogin:false,
         };
     }
 
     componentDidMount(){
         // Api.getUserInfo().then((res) => {
-        //     console.log(res)
         // }).catch((err) => {
-        //     console.log(err)
         //     window.location.href = "#/Dashboard/index"
         //     // message.error(err.msg);
         // })
@@ -111,7 +113,6 @@ class Dashboard extends React.Component {
 
 
     handleData(data) {
-        console.log(data)
         // if(data.){
         //
         // }
@@ -146,7 +147,6 @@ class Dashboard extends React.Component {
     //             default:
     //                 break;
     //         }
-    //         console.log(data,userData)
     //     }
     // }
 
@@ -157,7 +157,9 @@ class Dashboard extends React.Component {
             <Route
                 exact={route.isExact}
                 path={`${match.url}/${route.path}`}
-                render={props => <route.component {...props} routes={route.routes} />}
+                render={props => <route.component {...props} routes={route.routes}
+                                                  onChange={(value)=>{this.setState({activityKey:value})}}
+                                                  activeKey={this.state.activityKey} />}
             />
         );
         // let val = sessionStorage.getItem("key");
