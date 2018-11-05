@@ -26,14 +26,39 @@
     ul{
       background-color: white;
       list-style: none;
-      padding: 0;
+      padding-left: 2vw;
       border-top: 1px solid #ccc;
       border-bottom: 1px solid #ccc;
       li{
+        position: relative;
         font-size: 4vw;
         width: 100vw;
         line-height: 12vw;
         height: 12vw;
+        border-bottom: 1px solid #bfbfbf;
+        >span:first-child{
+          display: inline-block;
+          height: 12vw;
+          line-height: 12vw;
+          float: left;
+        }
+        >span:last-child{
+          position: absolute;
+          right: 3vw;
+          top: 50%;
+          transform: translateY(-50%);
+          .ant-avatar{
+            width: 12vw;
+            height: 12vw;
+          }
+          i{
+            font-style: normal;
+          }
+          img{
+            width: 12vw;
+            height: 12vw;
+          }
+        }
       }
     }
   }
