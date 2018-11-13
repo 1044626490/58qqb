@@ -5,6 +5,7 @@ import Dynamic from "../../components/common/DynamicChart"
 import Highcharts from 'highcharts'
 import $ from "jquery"
 import "./StockPage.less"
+import Api from "../../until/api"
 
 const { RangePicker } = DatePicker;
 const RadioButton = Radio.Button;
@@ -14,11 +15,42 @@ let chart;
 class StockPage extends React.Component{
     constructor(props) {
         super(props);
+        this.chart = null;
+        this.setI = null;
         this.state = {
+            id:null,
+            date:null,
+            tableInfo:[],
+            chart:null,
+            up:0,
+            down:0,
+            bidInfo:{}
         }
     }
 
     componentDidMount(){
+        let id = this.props.match.params.id;
+        let dates = this.props.match.params.date;
+        Api.smdTg({id,date:dates}).then(res => {
+            this.setState({
+                bidInfo:res.data
+            });
+            console.log(res);
+        }).catch(err =>{
+            console.log(err)
+        })
+        Api.hmdTg({id,date:dates}).then(res => {
+            console.log(res);
+            localStorage.setItem("todayPrice",res.data.hmd.join(";"))
+        }).catch(err =>{
+            console.log(err)
+        })
+        if(id&&dates){
+            this.setState({
+                id,
+                date:dates
+            })
+        }
         Highcharts.setOptions({
             global: {
                 useUTC: false
@@ -26,86 +58,137 @@ class StockPage extends React.Component{
         });
         function activeLastPointToolip(chart) {
             let points = chart.series[0].points;
-            chart.tooltip.refresh(points[points.length -1]);
+            chart.tooltip.refresh(points[points.length - 1]);
         }
         let today = new Date(new Date().toLocaleDateString()).getTime();
-        // let date = today+34200000;
-        let date = today+54000000;
-        let date1 = today+72000000;
-            let chart = Highcharts.chart('chart_wrap', {
-                chart: {
-                    // type: 'spline',
-                    marginRight: 10,
-                    events: {
-                        load: function () {
-                            var series = this.series[0],
-                                chart = this;
-                            // activeLastPointToolip(chart);
-                            setInterval(function () {
-                                let now = Date.now()-date;
-                                series.data.length = Math.round(now/1000);
-                                var x = (new Date()).getTime(), // 当前时间
-                                    y = -0.5;          // 随机值
-                                series.addPoint([x, y], true, true);
-                                // activeLastPointToolip(chart);
-                            }, 1000);
+        let date = today+34200000;
+        let now = Date.now()-date;
+        let date1 = today+54000000;
+        if(now/1000 < 0){
+            date = today+34200000-8460000;
+            date1 = today+54000000-84600000;
+        }
+        let data = [];
+        let storage = localStorage.getItem("todayPrice").split(";");
+        if(now/1000 > 19800||now/1000 < 0){
+            for (let i = -4800; i <= 0; i += 1) {
+                data.push({
+                    x: date + i * 4125,
+                    y: storage[i+4800]/1
+                });
+            }
+        }else {
+            for(let i = -now/1000; i<=0;i++){
+                data.push({
+                    x: date + i * 4125,
+                    y: storage[i+now/1000]
+                });
+            }
+        }
+        this.setI = setInterval(()=>{
+            let  count = 0;
+            // console.log(data);
+            if(now/1000 > 19800||now/1000 < 0){
+                if(data.length === 4801){
+                    count++
+                }
+            }else {
+                if(data.length === now/1000){
+                    count++
+                }
+            }
+            if(count === 1){
+                this.chart = Highcharts.chart('chart_wrap', {
+                    chart: {
+                        // type: 'spline',
+                        marginRight: 10,
+                        events: {
+                            load: function () {
+                                let series = this.series[0],
+                                    chart = this;
+                                console.log(series)
+                                let setI = setInterval(function () {
+                                    let now = Date.now()-date;
+                                    Api.smdTg({id,date:dates}).then(res => {
+                                        console.log(res);
+                                    }).catch(err =>{
+                                        console.log(err)
+                                    })
+                                    if(now/1000 > 19800||now/1000 < 0){
+                                        clearInterval(setI)
+                                    }else {
+                                        series.data.length = now/1000;
+                                        let x = (new Date()).getTime(), // 当前时间
+                                            y = -0.5;          // 随机值
+                                        series.addPoint([x, y], true, true);
+                                        console.log(Date.now(),series.data)
+                                        localStorage.setItem("todayPrice",series)
+                                    }
+                                    // activeLastPointToolip(chart);
+                                }, 4125);
+                            }
                         }
-                    }
-                },
-                title: {
-                    text: '动态模拟实时数据'
-                },
-                xAxis: {
-                    type: 'datetime',
-                    tickPixelInterval: 150,
-                    min:date,
-                    max:date1
-                },
-                yAxis: {
+                    },
                     title: {
-                        text: null
-                    }
-                },
-                rangeSelector : {
-                    buttons : [{
-                        type : 'hour',
-                        count : 1,
-                        text : '1h'
-                    }],
-                    selected : 1,
-                    inputEnabled : false
-                },
-                tooltip: {
-                    formatter: function () {
-                        return '<b>' + this.series.name + '</b><br/>' +
-                            Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
-                            Highcharts.numberFormat(this.y, 2);
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                series: [{
-                    type:'area',
-                    name: '随机数据',
-                    data: (function () {
-                        // 生成随机值
-                        var data = [],
-                            time = (new Date()).getTime(),
-                            i;
-                        for (i = -19; i <= 0; i += 1) {
-                            data.push({
-                                x: time + i * 1000,
-                                y: Math.random()
-                            });
+                        text: '动态模拟实时数据'
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        tickPixelInterval: 1,
+                        // min:date,
+                        // max:date1,
+                        tickWidth:0,    	//设置刻度标签宽度
+                        lineColor:'#ccc',//设置坐标颜色
+                        lineWidth:1,		//设置坐标宽度
+                        labels: {
+                            enabled: false
                         }
-                        return data;
-                    }())
-                }]
-            });
+                    },
+                    yAxis: {
+                        title: {
+                            text: null
+                        }
+                    },
+                    rangeSelector : {
+                        buttons : [{
+                            type : 'hour',
+                            count : 1,
+                            text : '1h'
+                        }],
+                        selected : 1,
+                        inputEnabled : false
+                    },
+                    tooltip: {
+                        formatter: function () {
+                            return '<b>' + this.series.name + '</b><br/>' +
+                                Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                                Highcharts.numberFormat(this.y, 2);
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    series: [{
+                        // type:'area',
+                        name: '随机数据',
+                        turboThreshold:4801,
+                        data: (function () {
+                            return data
+                        })()
+                    }]
+                });
+                clearInterval(this.setI)
+            }
+        },1000)
+    }
+
+    componentWillUnmount(){
+        this.chart = null;
+        clearInterval(this.setI)
     }
 
     render(){
+        console.log(this.state.bidInfo)
         return(
             <div className="stock-page-wrap">
                 <div className="stock-page-header">
@@ -114,20 +197,20 @@ class StockPage extends React.Component{
                 </div>
                 <div className="stock-info-content">
                     <div className="header-info">
-                        <Row>
-                            <Col span={6}><span>合约标的</span></Col>
-                            <Col span={10}><span>上证50ETF</span></Col>
-                            <Col span={8}><span>2.594 3.47%</span></Col>
-                        </Row>
+                        {/*<Row>*/}
+                            {/*<Col span={6}><span>合约标的</span></Col>*/}
+                            {/*<Col span={10}><span>上证50ETF</span></Col>*/}
+                            {/*<Col span={8}><span>2.594 3.47%</span></Col>*/}
+                        {/*</Row>*/}
                         <Row>
                             <Col span={6}><span>合约描述</span></Col>
-                            <Col span={10}><span>50ETF沽11月2250</span></Col>
-                            <Col span={8}><span>10001495</span></Col>
+                            <Col span={10}><span key={Math.random()}>{this.state.bidInfo.id?this.state.bidInfo.name:""}</span></Col>
+                            <Col span={8}><span key={Math.random()}>{this.state.bidInfo.id?this.state.bidInfo.id:""}</span></Col>
                         </Row>
                         <p>
-                            <span>最新价<i>0.0053</i></span>
-                            <span>昨收价0.0108</span>
-                            <span>涨跌幅<i>-50.93%</i></span>
+                            <span key={Math.random()}>最新价<i>{this.state.bidInfo.id?this.state.bidInfo.lp:0}</i></span>
+                            <span key={Math.random()}>昨收价{this.state.bidInfo.id?this.state.bidInfo.yesterday_price:0}</span>
+                            <span key={Math.random()}>涨跌幅<i>{this.state.bidInfo.id?(this.state.bidInfo.lp/this.state.bidInfo.yesterday_price-1).toFixed(4)*100:0.00}%</i></span>
                         </p>
                     </div>
                     <div className="stock-chart">
@@ -146,7 +229,7 @@ class StockPage extends React.Component{
                     <div className="price-control">
                         <Row>
                             <Col span={6}><span>委托价格</span></Col>
-                            <Col span={18}><Button className="add-cut"></Button><span className="add-value-cut">0.1721</span><Button className="add-cut"></Button></Col>
+                            <Col span={18}><Button className="add-cut"></Button><span className="add-value-cut">{this.state.bidInfo.id?this.state.bidInfo.lp:0}</span><Button className="add-cut"></Button></Col>
                         </Row>
                         <Row>
                             <RadioGroup onChange={this.onChange} value={this.state.value}>
@@ -174,7 +257,7 @@ class StockPage extends React.Component{
                             <Col span={6}><span>交易数量</span></Col>
                             <Col span={18}>
                                 <Button className="add-cut"></Button>
-                                <span className="add-value-cut">25</span>
+                                <span className="add-value-cut">1</span>
                                 <Button className="add-cut"></Button>
                             </Col>
                         </Row>

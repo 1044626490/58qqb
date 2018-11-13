@@ -9,7 +9,7 @@
       font-size: 5vw;
       width: 100vw;
       height: 10vw;
-      background-color: red;
+      background-color: #ffc901;
       color: white;
       position: relative;
       p{
@@ -60,9 +60,42 @@
       font-size: 5vw;
       width: 100vw;
       height: 10vw;
-      background-color: red;
+      background-color: #ffc901;
       color: white;
       position: relative;
+      .market-date-picker{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 30vw;
+        height: 6vw;
+        line-height: 6vw;
+        font-size: 3vw;
+        border-radius: 3vw;
+        .ant-select-selection{
+          color: white;
+          background-color: transparent;
+          border: 1px solid white;
+          width: 30vw;
+          height: 6vw;
+          line-height: 6vw;
+          border-radius: 8vw;
+          .ant-select-selection__rendered{
+            width: 30vw;
+            height: 6vw;
+            line-height: 6vw;
+          }
+        }
+        .ant-select-arrow{
+          color: white;
+        }
+      }
+      .market-date-picker:first-child{
+        left: 5vw;
+      }
+      .market-date-picker:last-child{
+        right: 5vw;
+      }
       p{
         height: 10vw;
         line-height: 10vw;
@@ -166,17 +199,23 @@
         }
         tr{
           border-bottom: 1px solid #7f7f7f;
-          td:nth-child(1),td:nth-child(2){
+          //td:nth-child(1),td:nth-child(2){
+          //  color: red;
+          //}
+          .up-price{
             color: red;
+          }
+          .down-price{
+            color: #00c14c;
           }
           td:nth-child(3){
             background-color: rgba(133,129,223,0.3);
             color: #8581df;
             border-color: rgba(133,129,223,0.3);
           }
-          td:nth-child(4),td:nth-child(5){
-            color: #00c14c;
-          }
+          //td:nth-child(4),td:nth-child(5){
+          //  color: #00c14c;
+          //}
         }
       }
     }
@@ -191,7 +230,7 @@
         height: 10vw;
         line-height: 10vw;
         text-align: center;
-        background-color: red;
+        background-color: #ffc901;
         color: white;
         margin: 0;
       }
@@ -257,7 +296,7 @@
     .my-index-header-container{
       width: 100vw;
       height: 70vw;
-      background-color: red;
+      background-color: #ffc901;
       color: white;
       position: relative;
       p:first-child{

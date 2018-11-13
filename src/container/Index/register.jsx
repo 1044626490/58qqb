@@ -98,6 +98,7 @@ class  Register extends React.Component{
 
     getKaptchald(){
         Api.sendVerifiCode({mobile:this.state.register.mobile}).then((res)=>{
+            console.log(res)
             message.success(res.msg)
         }).catch((err) => {
             message.error(err.msg)

@@ -77,6 +77,7 @@ class Login extends React.Component {
             message.success(res.msg)
             window.location.href = "#/Dashboard/index"
         }).catch((err) => {
+            console.log(err)
             message.error(err.msg)
         })
     }

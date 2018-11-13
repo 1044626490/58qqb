@@ -3,29 +3,20 @@
  * api请求的地址常量
  * */
 export const GET_LOGIN_CAPTCHA = '/login/captcha';
-export const LOGIN = '/api/login/login';//登录
-export const REGISTER = '/api/login/register';//注册
 export const SEND_VERIFI_CODE = '/api/login/send_verifi_code';//获取验证码
-export const GET_LEADER_BOARD = '/leaderboard';//查看排行榜
-export const GET_USER_MEDAL = '/user_medal';//个人勋章列表
+export const REGISTER = '/api/login/register';//注册
 export const GET_USER_INFO = 'api/user/user_info';//个人勋章列表
-export const EDIT_USERNAME = '/edit_username';//个人勋章列表
-export const COUPON = '/coupon';//活动页优惠券
-export const JOIN_ROOM_ID = '/join_room_id';//加入房间
-export const CREATE_ROOM = '/create_room';//创建房间
-export const CONFIRM_ROOM_PASS = '/confirm_room_pass';//验证房间密码
-export const RADOME_JOIN_ROOM = '/join_room';//加入房间
-export const UPLOAD_MY_HEAD = '/upload';//上传头像
-export const UPDATE_USERINFO = '/update_userinfo';//更新用户信息
-export const ADD_USER_LIST = '/add_user_list';//添加好友列表
-export const BATCH_AGREE_APPLY = '/batch_agree_apply';//同意添加好友
-export const OTHER_USER_INFO = '/other_user_info';//好友信息
-export const BATCH_REFUSE_APPLY = '/batch_refuse_apply';//拒绝添加好友
-export const BATCH_ADD_USER = '/batch_add_user';//申请添加好友
-export const SELF_FRIEND = '/self_friend';//好友列表
-export const BEGIN_GAME = '/begin_game';//好友列表
-export const CHALL_RES = '/chall_res';//好友列表
-export const LOGIN_OUT = '/logout';//好友列表
+export const LOGIN = '/api/login/login';//登录
+export const REAL_QUOTES = '/api/quotes/real_quotes';//real_quotes
+export const TARGET = '/api/quotes/target';//标的证券信息
+export const DATE_TG = '/api/quotes/date_tg';//标的合约日期列表
+export const EXEC_TG = '/api/quotes/exec_tg';//标的指定日期的合约行权价格列表
+export const STAT_TG = '/api/quotes/stat_tg';//合约基础信息
+export const MD_TG = '/api/quotes/md_tg';//实时行情
+export const SMD_TG = '/api/quotes/smd_tg';//实时行情
+export const HMD_TG = '/api/quotes/hmd_tg';//实时行情
+export const OPTIONAL = '/api/quotes/optional';//是否自选
+export const EDIT_OPTIONAL = '/api/quotes/edit_optional';//是否自选
 
 
 

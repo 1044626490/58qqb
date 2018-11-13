@@ -13,7 +13,7 @@ const routes = [
     {
         path: "Index",
         component: Loadable({
-            loader: () => import("~/container/Index/Index"),
+            loader: () => import("~/container/Index/index"),
             loading: MyLoadingComponent,
         }),
         contextTypes:{
@@ -77,7 +77,7 @@ const routes = [
         }),
         isExact: false
     },{
-        path: "StockPage",
+        path: "StockPage/:id/:date",
         component: Loadable({
             loader: () => import("~/container/StockPage/StockPage"),
             loading: MyLoadingComponent

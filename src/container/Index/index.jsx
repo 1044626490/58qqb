@@ -1,31 +1,101 @@
 import React from "react"
-import {Tabs, Icon, Table, DatePicker, Divider, Col, Row, Avatar} from 'antd';
+import {Tabs, Icon, Table, DatePicker, Divider, Col, Row, Avatar, Select} from 'antd';
 import connect from "react-redux/es/connect/connect";
 import {fetchPostsGetUser} from '~/action/getUserInfo';
-import "./Index.less"
+import Api from "../../until/api"
+import "./index.less"
 import moment from "moment";
 
+const Option = Select.Option;
 const { MonthPicker } = DatePicker;
 const TabPane = Tabs.TabPane;
+function getNowFormatDate() {
+    let date = new Date();
+    let seperator1 = "-";
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    let currentdate = year + seperator1 + month + seperator1 + strDate;
+    return currentdate;
+}
 class Index extends React.Component{
     constructor(props) {
         super(props);
+        this.setI = null;
         this.state = {
             activeKey:this.props.activeKey,
             date:"",
             userInfo:[],
-            now:new Date()
+            now:new Date(),
+            market:[],
+            name:[],
+            nowName:null,
+            nowDate:null,
+            exercisePrice:[],
+            purchase:[],
         }
     }
 
     componentDidMount(){
         this.props.dispatch(fetchPostsGetUser()).then(res =>{
+            console.log(res)
             this.setState({
                 userInfo:res.data
             })
         }).catch(err => {
+            console.log(err)
             window.location.href = "#/Dashboard/Login"
         })
+        Api.target().then(res => {
+            this.setState({
+                name:res.data.name,
+                market:res.data.date,
+                nowName:res.data.name[0].tg,
+                nowDate:res.data.date[0].ym,
+            });
+            // Api.dateTg({tg:res.data.name[0].tg,date:res.data.date[0].ym}).then(res => {
+            //     console.log(res)
+            // }).catch(err =>{
+            //     console.log(err)
+            // })
+            // Api.statTg({tg:res.data.name[0].tg,date:res.data.date[0].ym}).then(res => {
+            //     console.log(res)
+            // }).catch(err =>{
+            //     console.log(err)
+            // })
+            this.setI = setInterval(this.getMarket(),1000);
+            console.log(res)
+        }).catch(err =>{
+            console.log(err)
+        })
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.setI)
+    }
+
+    getMarket(){
+        Api.mdTg({tg:this.state.nowName,date:this.state.nowDate}).then(res => {
+            console.log(res.data.purchase)
+            this.setState({
+                purchase:res.data.purchase,
+                sell:res.data.sell
+            })
+        }).catch(err =>{
+        });
+        Api.execTg({tg:this.state.nowName,date:this.state.nowDate}).then(res => {
+            console.log(res.data.exec)
+            this.setState({
+                exercisePrice:res.data.exec
+            })
+        }).catch(err =>{
+        });
     }
 
     getOptionalTableData(){
@@ -47,25 +117,32 @@ class Index extends React.Component{
     }
 
     getMarketTableData(){
-        let data = [
-            {
-                SubscribeOr:"23.99",
-                SubscribeNew:0.3949,
-                exercisePrice:"2.200",
-                PutNew:"0.0036",
-                PutOr:"-45.45%"
-
-            },
-            {
-                SubscribeOr:"23.99",
-                SubscribeNew:0.3949,
-                exercisePrice:"2.200",
-                PutNew:"0.0036",
-                PutOr:"-45.45%"
-
-            },
-        ];
-        return data
+        let arr1 = this.state.exercisePrice;
+        let arr2 = this.state.purchase;
+        let arr4 = this.state.sell;
+        let arr3 = [];
+        if(this.state.purchase.length&&this.state.exercisePrice.length){
+            for(let i=0;i<arr1.length;i++){
+                let item = null;
+                let item1 = null;
+                for(let j=0;j<arr2.length;j++){
+                    if(arr1[i].price/1 === arr2[j].exec/1){
+                        item = arr2[j]
+                        item1 = arr4[j]
+                    }
+                }
+                arr3.push({
+                    id1:item.id,
+                    SubscribeOr:(item.up_down*10).toFixed(2)+"%",
+                    SubscribeNew:item.lp,
+                    exercisePrice:arr1[i].price,
+                    PutNew:item1.lp,
+                    PutOr:(item1.up_down).toFixed(2)+"%",
+                    id2:item.id
+                })
+            }
+        }
+        return arr3
     }
 
     getData(data){
@@ -133,7 +210,9 @@ class Index extends React.Component{
                         title: "涨跌",
                         key: "SubscribeOr",
                         render:(text, record)=>{
-                            return <span key={text} onClick={()=>this.getData("123123123")}>
+                            return <span key={text} className={record.SubscribeOr.indexOf("-") >= 0?
+                                "down-price":"up-price"}
+                                         onClick={()=>{window.location.href = "#/Dashboard/StockPage/"+record.id1+"/"+this.state.nowDate}}>
                                 {record.SubscribeOr}
                                 </span>
                         }
@@ -143,7 +222,9 @@ class Index extends React.Component{
                         title: "最新",
                         key: "SubscribeNew",
                         render:(text, record)=>{
-                            return <span key={text} onClick={()=>this.getData("123123123")}>
+                            return <span key={text}  className={record.SubscribeOr.indexOf("-") >= 0?
+                                "down-price":"up-price"}
+                                         onClick={()=>{window.location.href = "#/Dashboard/StockPage/"+record.id1+"/"+this.state.nowDate}}>
                                 {record.SubscribeNew}
                                 </span>
                         }
@@ -168,7 +249,9 @@ class Index extends React.Component{
                         title: "最新",
                         key: "PutNew",
                         render:(text, record)=>{
-                            return <span key={text} onClick={()=>this.getData("sasdasdasd")}>
+                            return <span key={text}  className={record.PutOr.indexOf("-") >= 0?
+                                "down-price":"up-price"}
+                                         onClick={()=>{window.location.href = "#/Dashboard/StockPage/"+record.id2+"/"+this.state.nowDate}}>
                                 {record.PutNew}
                                 </span>
                         }
@@ -178,7 +261,9 @@ class Index extends React.Component{
                         title: "涨跌",
                         key: "PutOr",
                         render:(text, record)=>{
-                            return <span key={text} onClick={()=>this.getData("sasdasdasd")}>
+                            return <span key={text}  className={record.PutOr.indexOf("-") >= 0?
+                                "down-price":"up-price"}
+                                         onClick={()=>{window.location.href = "#/Dashboard/StockPage/"+record.id2+"/"+this.state.nowDate}}>
                                 {record.PutOr}
                                 </span>
                         }
@@ -221,10 +306,24 @@ class Index extends React.Component{
                     <TabPane tab="行情" key="2">
                         <div className="market-wrap">
                             <div className="market-header-container">
+                                <Select className="market-date-picker" value={this.state.nowName} onChange={null}>
+                                    {
+                                        this.state.name.map((item, index) =>{
+                                            return <Option key={index} value={item.tg}>{item.name}</Option>
+                                        })
+                                    }
+                                </Select>
                                 <p>行情</p>
-                                <MonthPicker dropdownClassName="market-date-picker" onChange={(value)=>{this.setState({now:value})}}
-                                             value={moment(now,"MM月")}
-                                             format="MM月"/>
+                                <Select className="market-date-picker" value={this.state.nowDate} onChange={null}>
+                                    {
+                                        this.state.market.map((item, index) =>{
+                                            return <Option key={index} value={item.ym}>{item.ym}</Option>
+                                        })
+                                    }
+                                </Select>
+                                {/*<MonthPicker dropdownClassName="market-date-picker" onChange={(value)=>{this.setState({now:value})}}*/}
+                                             {/*value={moment(now,"MM月")}*/}
+                                             {/*format="MM月"/>*/}
                             </div>
                             <div className="market-content-container">
                                 <div>
