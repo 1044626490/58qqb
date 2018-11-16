@@ -17,6 +17,22 @@ export const SMD_TG = '/api/quotes/smd_tg';//实时行情
 export const HMD_TG = '/api/quotes/hmd_tg';//实时行情
 export const OPTIONAL = '/api/quotes/optional';//是否自选
 export const EDIT_OPTIONAL = '/api/quotes/edit_optional';//是否自选
+export const CJ_KH = '/api/position/cj_kh';//是否自选
+export const WT_KH = '/api/position/wt_kh';//是否自选
+export const CC_KH = '/api/position/cc_kh';//是否自选
+export const MG_KH = '/api/position/mg_kh';//是否自选
+export const CJ_FROM = '/api/position/cj_from';//是否自选
+export const WT_FROM = '/api/position/wt_from';//是否自选
+export const LSCJ_KH = '/api/position/lscj_kh';//是否自选
+export const LSZJ_KH = '/api/position/lszj_kh';//是否自选
+export const ADDKH = '/api/Operation/addkh';//是否自选
+export const KHINFO = '/api/Operation/khinfo';//是否自选
+export const EDITKH_NAME = '/api/Operation/editkh_name';//是否自选
+export const CHANGE_PASS = '/api/Operation/changepass';//是否自选
+export const UPLOAD = '/api/Operation/upload';//是否自选
+export const WEITUO_KH = '/api/Operation/weituo_kh';//是否自选
+export const CHEDAN_KH = '/api/Operation/chedan_kh';//是否自选
+export const SETBANK = '/api/Operation/setbank';//是否自选
 
 
 

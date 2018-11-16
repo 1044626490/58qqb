@@ -2,6 +2,7 @@ import React from "react"
 import { Icon, Button, Avatar } from "antd"
 import connect from "react-redux/es/connect/connect";
 import "./MyInfo.less"
+import history from "~/history";
 
 class MyInfo extends React.Component{
     constructor(props) {
@@ -17,7 +18,7 @@ class MyInfo extends React.Component{
         return(
             <div className="my-info-wrap-container">
                 <div className="info-header">
-                    <Icon type="left" theme="outlined" />
+                    <Icon onClick={()=>{history.go(-1)}} type="left" theme="outlined" />
                     <p>个人资料</p>
                 </div>
                 <div className="info-my-content">

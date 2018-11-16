@@ -39,6 +39,7 @@ class Index extends React.Component{
             nowDate:null,
             exercisePrice:[],
             purchase:[],
+            lookMyMoney:true
         }
     }
 
@@ -151,6 +152,13 @@ class Index extends React.Component{
 
     click(){
         window.location.href = "#/Dashboard/StockPage"
+    }
+
+    changeMarket = (name,value) => {
+        this.setState({
+            [name]:value
+        });
+        this.getMarket()
     }
 
     render(){
@@ -306,7 +314,8 @@ class Index extends React.Component{
                     <TabPane tab="行情" key="2">
                         <div className="market-wrap">
                             <div className="market-header-container">
-                                <Select className="market-date-picker" value={this.state.nowName} onChange={null}>
+                                <Select className="market-date-picker" value={this.state.nowName}
+                                        onChange={(value)=>this.changeMarket("nowName",value)}>
                                     {
                                         this.state.name.map((item, index) =>{
                                             return <Option key={index} value={item.tg}>{item.name}</Option>
@@ -314,16 +323,14 @@ class Index extends React.Component{
                                     }
                                 </Select>
                                 <p>行情</p>
-                                <Select className="market-date-picker" value={this.state.nowDate} onChange={null}>
+                                <Select className="market-date-picker" value={this.state.nowDate}
+                                        onChange={(value)=>this.changeMarket("nowDate",value)}>
                                     {
                                         this.state.market.map((item, index) =>{
                                             return <Option key={index} value={item.ym}>{item.ym}</Option>
                                         })
                                     }
                                 </Select>
-                                {/*<MonthPicker dropdownClassName="market-date-picker" onChange={(value)=>{this.setState({now:value})}}*/}
-                                             {/*value={moment(now,"MM月")}*/}
-                                             {/*format="MM月"/>*/}
                             </div>
                             <div className="market-content-container">
                                 <div>
@@ -352,13 +359,13 @@ class Index extends React.Component{
                                 <div className="my-deal">
                                     <div className="deal-content">
                                         <p>
-                                            <span>交易账号：{userInfo.up_uid}</span><Icon type="eye" theme="outlined" />
+                                            <span>交易账号：{userInfo.up_uid}</span><Icon onClick={()=>{this.setState({lookMyMoney:!this.state.lookMyMoney})}} type="eye" theme="outlined" />
                                         </p>
                                         <div className="my-deal-info">
                                             <Row>
-                                                <Col span={8}><Row>总权益</Row><Row>{userInfo.bal >= 0?userInfo.bal.toFixed(2):""}</Row></Col>
-                                                <Col span={8}><Row>持仓市值</Row><Row>{userInfo.bal >= 0?(userInfo.bal-userInfo.aval).toFixed(2):""}</Row></Col>
-                                                <Col span={8}><Row>持仓盈号</Row><Row>{userInfo.aval >= 0?userInfo.aval.toFixed(2):""}</Row></Col>
+                                                <Col span={8}><Row>总权益</Row><Row>{!this.state.lookMyMoney?"****":userInfo.bal >= 0?userInfo.bal.toFixed(2):"0.00"}</Row></Col>
+                                                <Col span={8}><Row>持仓市值</Row><Row>{!this.state.lookMyMoney?"****":userInfo.bal >= 0?(userInfo.bal-userInfo.aval).toFixed(2):"0.00"}</Row></Col>
+                                                <Col span={8}><Row>持仓盈号</Row><Row>{!this.state.lookMyMoney?"****":userInfo.aval >= 0?userInfo.aval.toFixed(2):"0.00"}</Row></Col>
                                             </Row>
                                         </div>
                                     </div>
@@ -412,8 +419,8 @@ class Index extends React.Component{
                                     <li onClick={()=>{window.location.href = "#/Dashboard/MyEntrust"}}>
                                         <Icon type="team" theme="outlined" />
                                         <p>我的委托<Icon type="right" theme="outlined" /></p></li>
-                                    <li><Icon type="mobile" theme="outlined" />
-                                        <p>我的客服<Icon type="right" theme="outlined" /></p></li>
+                                    {/*<li><Icon type="mobile" theme="outlined" />*/}
+                                        {/*<p>我的客服<Icon type="right" theme="outlined" /></p></li>*/}
                                     <li><Icon type="check-circle" theme="outlined" />
                                         <p>版本号<span>v1.0.9</span></p></li>
                                 </ul>

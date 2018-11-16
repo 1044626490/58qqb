@@ -1,5 +1,5 @@
 import React from "react"
-import { Icon, Button, Row, Col, DatePicker, Radio  } from "antd"
+import { Icon, Button, Row, Col, DatePicker, Radio, message  } from "antd"
 import moment from "moment";
 import Dynamic from "../../components/common/DynamicChart"
 import Highcharts from 'highcharts'
@@ -24,7 +24,10 @@ class StockPage extends React.Component{
             chart:null,
             up:0,
             down:0,
-            bidInfo:{}
+            bidInfo:{},
+            isMine:0,
+            value:"0",
+            num:1
         }
     }
 
@@ -38,6 +41,13 @@ class StockPage extends React.Component{
             console.log(res);
         }).catch(err =>{
             console.log(err)
+        })
+        Api.optional({id}).then(res => {
+            this.setState({
+                isMine:res.data.is_optional
+            })
+        }).catch(err => {
+
         })
         Api.hmdTg({id,date:dates}).then(res => {
             console.log(res);
@@ -61,12 +71,12 @@ class StockPage extends React.Component{
             chart.tooltip.refresh(points[points.length - 1]);
         }
         let today = new Date(new Date().toLocaleDateString()).getTime();
-        let date = today+34200000;
+        let date = today+54000000;
         let now = Date.now()-date;
-        let date1 = today+54000000;
+        let date1 = today+72000000;
         if(now/1000 < 0){
-            date = today+34200000-8460000;
-            date1 = today+54000000-84600000;
+            date = today+54000000-8460000;
+            date1 = today+72000000-84600000;
         }
         let data = [];
         let storage = localStorage.getItem("todayPrice").split(";");
@@ -187,8 +197,17 @@ class StockPage extends React.Component{
         clearInterval(this.setI)
     }
 
+    editOptional(){
+        Api.editOptional({id:this.state.id}).then(res => {
+            message.success(res.msg)
+        }).catch(err =>{
+            message.warning(err.msg)
+        })
+    }
+
     render(){
         console.log(this.state.bidInfo)
+        const values = ["5","10","15","20","25","30"]
         return(
             <div className="stock-page-wrap">
                 <div className="stock-page-header">
@@ -232,33 +251,22 @@ class StockPage extends React.Component{
                             <Col span={18}><Button className="add-cut"></Button><span className="add-value-cut">{this.state.bidInfo.id?this.state.bidInfo.lp:0}</span><Button className="add-cut"></Button></Col>
                         </Row>
                         <Row>
-                            <RadioGroup onChange={this.onChange} value={this.state.value}>
-                                <Col span={4}>
-                                    <RadioButton value="5">5</RadioButton>
-                                </Col>
-                                <Col span={4}>
-                                    <RadioButton value="10">10</RadioButton>
-                                </Col>
-                                <Col span={4}>
-                                    <RadioButton value="15">15</RadioButton>
-                                </Col>
-                                <Col span={4}>
-                                    <RadioButton value="20">20</RadioButton>
-                                </Col>
-                                <Col span={4}>
-                                    <RadioButton value="25">25</RadioButton>
-                                </Col>
-                                <Col span={4}>
-                                    <RadioButton value="30">30</RadioButton>
-                                </Col>
+                            <RadioGroup onChange={(value)=>{this.setState({value:value.target.value})}} value={this.state.value}>
+                                {
+                                    values.map((item, index) => {
+                                        return <Col span={4} key={index}>
+                                            <RadioButton className={this.state.value === item?"isChecked":""} value={item}>{item}</RadioButton>
+                                        </Col>
+                                    })
+                                }
                             </RadioGroup>
                         </Row>
                         <Row>
                             <Col span={6}><span>交易数量</span></Col>
                             <Col span={18}>
-                                <Button className="add-cut"></Button>
-                                <span className="add-value-cut">1</span>
-                                <Button className="add-cut"></Button>
+                                <Button onClick={()=>{this.setState({num:--this.state.num})}} className="add-cut"></Button>
+                                <span className="add-value-cut">{this.state.num}</span>
+                                <Button onClick={()=>{this.setState({num:++this.state.num})}} className="add-cut"></Button>
                             </Col>
                         </Row>
                         <Row>
@@ -268,7 +276,7 @@ class StockPage extends React.Component{
                     </div>
                     <Row className="operation-button">
                         <Col span={6}><Button>买入</Button></Col>
-                        <Col span={12}><Button>删除自选</Button></Col>
+                        <Col span={12}><Button onClick={()=>this.editOptional()}>{this.state.isMine?"删除自选":"添加自选"}</Button></Col>
                         <Col span={6}><Button>卖出</Button></Col>
                     </Row>
                 </div>

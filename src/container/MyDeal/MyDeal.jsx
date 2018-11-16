@@ -1,7 +1,8 @@
 import React from "react"
-import { Icon, Button, Row, Col, DatePicker } from "antd"
+import { Icon, Button, Row, Col, DatePicker, message } from "antd"
 import moment from "moment";
 import "./MyDeal.less"
+import Api from "../../until/api"
 
 const { RangePicker } = DatePicker;
 class MyDeal extends React.Component{
@@ -11,6 +12,7 @@ class MyDeal extends React.Component{
         this.state = {
             startValue: null,
             endValue: null,
+            myDeal:[]
         }
     }
 
@@ -28,7 +30,7 @@ class MyDeal extends React.Component{
             return false;
         }
         return endValue.valueOf() <= startValue.valueOf();
-    }
+    };
 
     onChange = (field, value) => {
         this.setState({
@@ -37,6 +39,7 @@ class MyDeal extends React.Component{
     }
 
     onStartChange = (value) => {
+        console.log(value)
         this.onChange('startValue', value);
     }
 
@@ -55,6 +58,21 @@ class MyDeal extends React.Component{
     //         this.setState({ endOpen: true });
     //     }
     // }
+
+    getMyDeal(){
+        if(!this.state.endValue||!this.state.startValue){
+            message.warning("请先选择时间范围")
+            return false
+        }
+        Api.lscjKh({bengin_day:moment(this.state.startValue).format('YYYY-MM-DD'),
+            to_day:moment(this.state.endValue).format('YYYY-MM-DD')}).then(res => {
+            this.setState({
+                myDeal:res.data
+            })
+        }).catch(err => {
+            message.warning(err.msg)
+        })
+    }
 
     render(){
         const { startValue, endValue, endOpen } = this.state;
@@ -87,44 +105,50 @@ class MyDeal extends React.Component{
                                     onChange={this.onEndChange}
                                 />
                             </div>
-                            <Button>查询</Button>
+                            <Button onClick={()=>this.getMyDeal()}>查询</Button>
                         </p>
-                        <ul>
-                            <li>
-                                <Row><Col className="sale-name" span={6}>合约卖出</Col><Col span={10}>50ETF沽11月2200</Col><Col span={8}>10001500</Col></Row>
-                                <Row>
-                                    <Col span={6}>
-                                        <p>2018-11-02</p>
-                                        <p>13:39:25</p>
-                                    </Col>
-                                    <Col span={10}>
-                                        <p className="deal-price">0.0035</p>
-                                        <p>成交均价</p>
-                                    </Col>
-                                    <Col span={8}>
-                                        <p>1</p>
-                                        <p>委托数量</p>
-                                    </Col>
-                                </Row>
-                            </li>
-                            <li>
-                                <Row><Col className="sale-name" span={6}>合约卖出</Col><Col span={10}>50ETF沽11月2200</Col><Col span={8}>10001500</Col></Row>
-                                <Row>
-                                    <Col span={6}>
-                                        <p>2018-11-02</p>
-                                        <p>13:39:25</p>
-                                    </Col>
-                                    <Col span={10}>
-                                        <p className="deal-price">0.0035</p>
-                                        <p>成交均价</p>
-                                    </Col>
-                                    <Col span={8}>
-                                        <p>1</p>
-                                        <p>委托数量</p>
-                                    </Col>
-                                </Row>
-                            </li>
-                        </ul>
+                        {
+                            this.state.myDeal.length?<ul>
+                                {
+                                    this.state.myDeal.map((item, index) =>{
+                                        return <li>
+                                            <Row><Col className="sale-name" span={6}>{item.dir?"合约卖出":"合约买入"}</Col><Col span={10}>{item.inst}</Col><Col span={8}>10001500</Col></Row>
+                                            <Row>
+                                                <Col span={6}>
+                                                    <p>{item.day}</p>
+                                                    <p>{item.time}</p>
+                                                </Col>
+                                                <Col span={10}>
+                                                    <p className="deal-price">{item.price}</p>
+                                                    <p>成交均价</p>
+                                                </Col>
+                                                <Col span={8}>
+                                                    <p>{item.vol}</p>
+                                                    <p>委托数量</p>
+                                                </Col>
+                                            </Row>
+                                        </li>
+                                    })
+                                }
+                                {/*<li>*/}
+                                {/*<Row><Col className="sale-name" span={6}>合约卖出</Col><Col span={10}>50ETF沽11月2200</Col><Col span={8}>10001500</Col></Row>*/}
+                                {/*<Row>*/}
+                                {/*<Col span={6}>*/}
+                                {/*<p>2018-11-02</p>*/}
+                                {/*<p>13:39:25</p>*/}
+                                {/*</Col>*/}
+                                {/*<Col span={10}>*/}
+                                {/*<p className="deal-price">0.0035</p>*/}
+                                {/*<p>成交均价</p>*/}
+                                {/*</Col>*/}
+                                {/*<Col span={8}>*/}
+                                {/*<p>1</p>*/}
+                                {/*<p>委托数量</p>*/}
+                                {/*</Col>*/}
+                                {/*</Row>*/}
+                                {/*</li>*/}
+                            </ul>:null
+                        }
                     </div>
                 </div>
             </div>
