@@ -56,6 +56,27 @@ const routes = [
         }),
         isExact: false
     },{
+        path: "IncomeRecord",
+        component: Loadable({
+            loader: () => import("~/container/MyRight/component/IncomeRecord"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "RechargeAndExpend/:id",
+        component: Loadable({
+            loader: () => import("~/container/MyRight/component/RechargeAndExpend"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "MoneyRecord/:id",
+        component: Loadable({
+            loader: () => import("~/container/MyRight/component/MoneyRecord"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
         path: "MyDeal",
         component: Loadable({
             loader: () => import("~/container/MyDeal/MyDeal"),
@@ -87,6 +108,13 @@ const routes = [
         path: "ContractSearch",
         component: Loadable({
             loader: () => import("~/container/ContractSearch/ContractSearch"),
+            loading: MyLoadingComponent
+        }),
+        isExact: false
+    },{
+        path: "Position",
+        component: Loadable({
+            loader: () => import("~/container/Position/Position"),
             loading: MyLoadingComponent
         }),
         isExact: false

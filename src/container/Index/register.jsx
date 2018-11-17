@@ -26,7 +26,7 @@ class  Register extends React.Component{
                     placeholder:"真实姓名",
                     isOk:"",
                     before:<Icon className="before-icon" type="user" theme="outlined" />,
-                    // re:/^1[34578]\d{9}$/,
+                    re:/^[\u4e00-\u9fa5]+$/,
                 },
                 {
                     key:"mobile",
@@ -36,7 +36,7 @@ class  Register extends React.Component{
                     placeholder:"手机号码",
                     isOk:"",
                     before:<Icon type="tablet" theme="outlined" />,
-                    re:/^1[34578]\d{9}$/,
+                    re:/^1[345789]\d{9}$/,
                 },
                 {
                     key:"code",
@@ -54,6 +54,7 @@ class  Register extends React.Component{
                     message:"请输入交易密码（6~12位）",
                     placeholder:"用户密码",
                     isOk:"",
+                    re:/^\d{6,12}$/,
                     before:<Icon className="before-icon" type="lock" theme="outlined" />
                 },
                 {
@@ -98,7 +99,6 @@ class  Register extends React.Component{
 
     getKaptchald(){
         Api.sendVerifiCode({mobile:this.state.register.mobile}).then((res)=>{
-            console.log(res)
             message.success(res.msg)
         }).catch((err) => {
             message.error(err.msg)

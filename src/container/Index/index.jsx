@@ -1,5 +1,5 @@
 import React from "react"
-import {Tabs, Icon, Table, DatePicker, Divider, Col, Row, Avatar, Select} from 'antd';
+import {Tabs, Icon, Table, DatePicker, Divider, Col, Row, Avatar, Select, message} from 'antd';
 import connect from "react-redux/es/connect/connect";
 import {fetchPostsGetUser} from '~/action/getUserInfo';
 import Api from "../../until/api"
@@ -39,20 +39,25 @@ class Index extends React.Component{
             nowDate:null,
             exercisePrice:[],
             purchase:[],
-            lookMyMoney:true
+            lookMyMoney:true,
+            myChoose:[]
         }
     }
 
     componentDidMount(){
         this.props.dispatch(fetchPostsGetUser()).then(res =>{
-            console.log(res)
             this.setState({
                 userInfo:res.data
             })
         }).catch(err => {
-            console.log(err)
             window.location.href = "#/Dashboard/Login"
-        })
+        });
+        Api.optionalList().then(res => {
+            this.setState({
+                myChoose:res.data
+            })
+        }).catch(err => {
+        });
         Api.target().then(res => {
             this.setState({
                 name:res.data.name,
@@ -60,20 +65,9 @@ class Index extends React.Component{
                 nowName:res.data.name[0].tg,
                 nowDate:res.data.date[0].ym,
             });
-            // Api.dateTg({tg:res.data.name[0].tg,date:res.data.date[0].ym}).then(res => {
-            //     console.log(res)
-            // }).catch(err =>{
-            //     console.log(err)
-            // })
-            // Api.statTg({tg:res.data.name[0].tg,date:res.data.date[0].ym}).then(res => {
-            //     console.log(res)
-            // }).catch(err =>{
-            //     console.log(err)
-            // })
+            this.getMarket();
             this.setI = setInterval(this.getMarket(),1000);
-            console.log(res)
         }).catch(err =>{
-            console.log(err)
         })
     }
 
@@ -82,8 +76,10 @@ class Index extends React.Component{
     }
 
     getMarket(){
+        let today = new Date(new Date().toLocaleDateString()).getTime();
+        let date = today+54000000;
+        let now = Date.now()-date;
         Api.mdTg({tg:this.state.nowName,date:this.state.nowDate}).then(res => {
-            console.log(res.data.purchase)
             this.setState({
                 purchase:res.data.purchase,
                 sell:res.data.sell
@@ -91,29 +87,29 @@ class Index extends React.Component{
         }).catch(err =>{
         });
         Api.execTg({tg:this.state.nowName,date:this.state.nowDate}).then(res => {
-            console.log(res.data.exec)
             this.setState({
                 exercisePrice:res.data.exec
             })
         }).catch(err =>{
         });
+        // if(now/1000 > 0||now/1000 < -54000){
+        //     clearInterval(this.setI)
+        // }
     }
 
     getOptionalTableData(){
-        let data = [
-            {
-                contractName:"50ETF购11月2200",
-                recentQuotation:0.3949,
-                priceLimit:"23.99%",
-                exercisePrice:"2.200"
-            },
-            {
-                contractName:"50ETF购11月2100",
-                recentQuotation:0.3003,
-                priceLimit:"25%",
-                exercisePrice:"2.100"
-            }
-        ]
+        let data = [];
+        for(let i=0;i<this.state.myChoose.length;i++){
+            let ud = (this.state.myChoose[i].lp-this.state.myChoose[i].pc).toFixed(4)*100+"%";
+            data.push({
+                date:this.state.myChoose[i].date,
+                id:this.state.myChoose[i].id,
+                contractName:this.state.myChoose[i].name,
+                recentQuotation:this.state.myChoose[i].lp,
+                priceLimit:ud,
+                exercisePrice:this.state.myChoose[i].exec.toFixed(3)
+            })
+        }
         return data
     }
 
@@ -146,12 +142,8 @@ class Index extends React.Component{
         return arr3
     }
 
-    getData(data){
-        console.log(data)
-    }
-
-    click(){
-        window.location.href = "#/Dashboard/StockPage"
+    click(record){
+        window.location.href = "#/Dashboard/StockPage/"+record.id+"/"+record.date
     }
 
     changeMarket = (name,value) => {
@@ -279,7 +271,7 @@ class Index extends React.Component{
                 ]
             }
             ]
-        const userInfo = this.state.userInfo;
+        const userInfo = this.props.userInfo.data||this.state.userInfo;
         let now = this.state.now;
         return(
             <div className="index-wrap">
@@ -289,7 +281,7 @@ class Index extends React.Component{
                         <div className="optional-wrap">
                             <div className="optional-header-container">
                                 <p>自选</p>
-                                <Icon onClick={()=>{window.location.href = "#/Dashboard/ContractSearch"}} type="search" theme="outlined" />
+                                {/*<Icon onClick={()=>{window.location.href = "#/Dashboard/ContractSearch"}} type="search" theme="outlined" />*/}
                             </div>
                             <div className="optional-content-container">
                                 <Table
@@ -359,12 +351,12 @@ class Index extends React.Component{
                                 <div className="my-deal">
                                     <div className="deal-content">
                                         <p>
-                                            <span>交易账号：{userInfo.up_uid}</span><Icon onClick={()=>{this.setState({lookMyMoney:!this.state.lookMyMoney})}} type="eye" theme="outlined" />
+                                            <span>交易账号：{!this.state.lookMyMoney?"*********":userInfo.up_uid}</span><Icon onClick={()=>{this.setState({lookMyMoney:!this.state.lookMyMoney})}} type="eye" theme="outlined" />
                                         </p>
                                         <div className="my-deal-info">
                                             <Row>
                                                 <Col span={8}><Row>总权益</Row><Row>{!this.state.lookMyMoney?"****":userInfo.bal >= 0?userInfo.bal.toFixed(2):"0.00"}</Row></Col>
-                                                <Col span={8}><Row>持仓市值</Row><Row>{!this.state.lookMyMoney?"****":userInfo.bal >= 0?(userInfo.bal-userInfo.aval).toFixed(2):"0.00"}</Row></Col>
+                                                <Col span={8}><Row>持仓市值</Row><Row>{!this.state.lookMyMoney?"****":userInfo.bal >= 0?userInfo.market_value.toFixed(2):"0.00"}</Row></Col>
                                                 <Col span={8}><Row>持仓盈号</Row><Row>{!this.state.lookMyMoney?"****":userInfo.aval >= 0?userInfo.aval.toFixed(2):"0.00"}</Row></Col>
                                             </Row>
                                         </div>
@@ -373,15 +365,15 @@ class Index extends React.Component{
                             </div>
                             <div className="my-deal-operation-cpntainer">
                                 <Row>
-                                    <Col onClick={()=>{window.location.href = "#/Dashboard/StockPage"}} span={6}>
+                                    <Col onClick={()=>{window.location.href = "#/Dashboard/MyRight"}} span={6}>
                                         <Row><img src="" alt=""/></Row>
-                                        <Row><span>买入开仓</span></Row>
+                                        <Row><span>出入金</span></Row>
                                     </Col>
                                     <Col onClick={()=>{window.location.href = "#/Dashboard/MyEntrust"}} span={6}>
                                         <Row><img src="" alt=""/></Row>
                                         <Row><span>我的委托</span></Row>
                                     </Col>
-                                    <Col span={6}>
+                                    <Col onClick={()=>{window.location.href = "#/Dashboard/Position"}} span={6}>
                                         <Row><img src="" alt=""/></Row>
                                         <Row><span>我的持仓</span></Row>
                                     </Col>
@@ -403,7 +395,7 @@ class Index extends React.Component{
                                 <div className="my-info">
                                     <Row>
                                         <Col span={8}><Row>总权益</Row><Row>{userInfo.bal >= 0?userInfo.bal.toFixed(2):""}</Row></Col>
-                                        <Col span={8}><Row>持仓市值</Row><Row>{userInfo.bal >= 0?(userInfo.bal-userInfo.aval).toFixed(2):""}</Row></Col>
+                                        <Col span={8}><Row>持仓市值</Row><Row>{userInfo.bal >= 0?userInfo.market_value.toFixed(2):""}</Row></Col>
                                         <Col span={8}><Row>可用权益</Row><Row>{userInfo.aval >= 0?userInfo.aval.toFixed(2):""}</Row></Col>
                                     </Row>
                                 </div>
@@ -434,7 +426,7 @@ class Index extends React.Component{
 }
 
 const mapStateToProps = state => {
-    const {loginReducer,userInfo} = state;
-    return {loginReducer,userInfo}
+    const {userInfo} = state;
+    return {userInfo}
 };
 export default connect(mapStateToProps)(Index)

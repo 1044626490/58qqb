@@ -68,18 +68,14 @@ export const postModeCors = (url, params, headers) => request(url, params, heade
  * @param {Object} respPromise 请求返回的数据 必填
  * */
 const checkRespStatus = (respPromise) => {
-    console.log(respPromise);
     return new Promise((resolve, reject) => {
-        console.log(respPromise);
         if (respPromise && respPromise.status === 200) {
-            console.log(respPromise);
             if (respPromise.url.indexOf(C.GET_LOGIN_CAPTCHA) >= 0) {
                 respPromise.blob().then((res) => {
                     resolve(res)
                 })
             } else {
                 respPromise.json().then((res) => {
-                    console.log(res)
                     if (res.code === "0000" || res.status === "1") {
                         if(res.content===null){
                             res.content=[]

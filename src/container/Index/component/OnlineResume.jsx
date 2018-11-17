@@ -149,7 +149,6 @@ class OnlineResume extends React.Component {
         let educationBack = this.state.educationBack.map((item) => {
             return item.join("|,|")
         });
-        console.log(educationBack);
         let projectExperience = this.state.projectExp.map((item) => {
             return item.join("|,|")
         });
@@ -160,7 +159,6 @@ class OnlineResume extends React.Component {
             educationBack,
             projectExperience,
         };
-        console.log(params.projectExperience,params);
         Api.updateResumeInfo(params).then((res) => {
             message.success(res.message);
         }).catch((res) => {

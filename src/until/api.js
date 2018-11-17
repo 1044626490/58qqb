@@ -8,6 +8,7 @@ export default {
     getDateOrTime,
     // getLoginCaptcha: (params, headers) => request(C.GET_LOGIN_CAPTCHA, params, headers),
     login: (params) =>request(C.LOGIN, params),
+    logout: (params) =>request(C.LOGOUT, params),
     getUserInfo: (params) =>request(C.GET_USER_INFO, params),
     register: (params) =>post(C.REGISTER, params),
     sendVerifiCode: (params) =>request(C.SEND_VERIFI_CODE, params),
@@ -20,6 +21,7 @@ export default {
     smdTg: (params) =>post(C.SMD_TG, params),
     hmdTg: (params) =>post(C.HMD_TG, params),
     optional: (params) =>post(C.OPTIONAL, params),
+    optionalList: (params) =>post(C.OPTIONAL_LIST, params),
     editOptional: (params) =>post(C.EDIT_OPTIONAL, params),
     cjKh: (params) =>post(C.CJ_KH, params),
     wtKh: (params) =>post(C.WT_KH, params),
@@ -37,6 +39,9 @@ export default {
     weiTuoKh: (params) =>post(C.WEITUO_KH, params),
     cheDanKh: (params) =>post(C.CHEDAN_KH, params),
     setBank: (params) =>post(C.SETBANK, params),
+    withDrawalKh: (params) =>post(C.WITHDRAWAL_KH, params),
+    depositKh: (params) =>post(C.DEPOSIT_KH, params),
+    reflect: (params) =>post(C.REFLECT, params),
 
 
     // logout: (params) => post(C.LOGOUT, params),

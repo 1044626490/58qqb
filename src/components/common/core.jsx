@@ -50,7 +50,6 @@ export default class EchartsReactCore extends Component {
       try {
         echartObj.resize();
       } catch (e) {
-        console.warn(e);
       }
     }
   }
@@ -70,7 +69,6 @@ export default class EchartsReactCore extends Component {
       try {
         clear(this.echartsElement);
       } catch (e) {
-        console.warn(e);
       }
       // dispose echarts instance
       this.echartsLib.dispose(this.echartsElement);
@@ -91,7 +89,6 @@ export default class EchartsReactCore extends Component {
         try {
           echartObj.resize();
         } catch (e) {
-          console.warn(e);
         }
       });
     }

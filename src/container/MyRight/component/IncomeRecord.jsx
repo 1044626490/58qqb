@@ -1,8 +1,8 @@
 import React from "react"
 import { Icon, Button, Row, Col, DatePicker, message } from "antd"
 import moment from "moment";
-import "./MyDeal.less"
-import Api from "../../until/api"
+import "./IncomeRecord.less"
+import Api from "../../../until/api"
 
 const { RangePicker } = DatePicker;
 class MyDeal extends React.Component{
@@ -12,7 +12,7 @@ class MyDeal extends React.Component{
         this.state = {
             startValue: null,
             endValue: null,
-            myDeal:[]
+            incomeRecord:[]
         }
     }
 
@@ -63,10 +63,10 @@ class MyDeal extends React.Component{
             message.warning("请先选择时间范围")
             return false
         }
-        Api.lscjKh({bengin_day:moment(this.state.startValue).format('YYYY-MM-DD'),
+        Api.lszjKh({bengin_day:moment(this.state.startValue).format('YYYY-MM-DD'),
             to_day:moment(this.state.endValue).format('YYYY-MM-DD')}).then(res => {
             this.setState({
-                myDeal:res.data.lscj
+                incomeRecord:res.data
             })
         }).catch(err => {
             message.warning(err.msg)
@@ -76,15 +76,15 @@ class MyDeal extends React.Component{
     render(){
         const { startValue, endValue, endOpen } = this.state;
         return(
-            <div className="my-deal-wrap">
-                <div className="my-deal-header">
+            <div className="my-IncomeRecord-wrap">
+                <div className="my-IncomeRecord-header">
                     <Icon  onClick={()=>{window.history.go(-1)}} type="left" theme="outlined" />
-                    <p>我的成交</p>
+                    <p>出入金记录</p>
                     <Icon type="sync" theme="outlined" />
                 </div>
-                <div className="my-deal-content">
-                    <div className="deal-content-header">
-                        <p>
+                <div className="my-IncomeRecord-content">
+                    <div className="IncomeRecord-content-header">
+                        <div>
                             <span>选择日期</span>
                             <div className="date-picker-wrap-content">
                                 <DatePicker
@@ -105,47 +105,26 @@ class MyDeal extends React.Component{
                                 />
                             </div>
                             <Button onClick={()=>this.getMyDeal()}>查询</Button>
-                        </p>
+                        </div>
                         {
-                            this.state.myDeal.length?<ul>
+                            this.state.incomeRecord.length?<ul>
                                 {
-                                    this.state.myDeal.map((item, index) =>{
+                                    this.state.incomeRecord.map((item, index) => {
                                         return <li>
-                                            <Row><Col className="sale-name" span={6}>{item.dir?"合约卖出":"合约买入"}</Col><Col span={10}>{item.inst}</Col><Col span={8}>{item.id}</Col></Row>
+                                            <p>{item.type === 0?"网点入金":item.type === 1?"买券":item.type === 2?"卖券":"系统直入"}</p>
                                             <Row>
-                                                <Col span={6}>
-                                                    <p>{item.day}</p>
-                                                    <p>{item.time}</p>
+                                                <Col span={9}>
+                                                    <Row>{item.day}</Row>
+                                                    <Row>{item.time}</Row>
                                                 </Col>
-                                                <Col span={10}>
-                                                    <p className="deal-price">{item.price}</p>
-                                                    <p>成交均价</p>
-                                                </Col>
-                                                <Col span={8}>
-                                                    <p>{item.vol}</p>
-                                                    <p>委托数量</p>
+                                                <Col span={15}>
+                                                    <Row>{item.cash}元</Row>
+                                                    <Row>发生金额</Row>
                                                 </Col>
                                             </Row>
                                         </li>
                                     })
                                 }
-                                {/*<li>*/}
-                                {/*<Row><Col className="sale-name" span={6}>合约卖出</Col><Col span={10}>50ETF沽11月2200</Col><Col span={8}>10001500</Col></Row>*/}
-                                {/*<Row>*/}
-                                {/*<Col span={6}>*/}
-                                {/*<p>2018-11-02</p>*/}
-                                {/*<p>13:39:25</p>*/}
-                                {/*</Col>*/}
-                                {/*<Col span={10}>*/}
-                                {/*<p className="deal-price">0.0035</p>*/}
-                                {/*<p>成交均价</p>*/}
-                                {/*</Col>*/}
-                                {/*<Col span={8}>*/}
-                                {/*<p>1</p>*/}
-                                {/*<p>委托数量</p>*/}
-                                {/*</Col>*/}
-                                {/*</Row>*/}
-                                {/*</li>*/}
                             </ul>:null
                         }
                     </div>

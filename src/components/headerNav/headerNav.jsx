@@ -17,7 +17,6 @@ class HeaderNav extends React.Component {
     }
 
     goBackHistory(e){
-        console.log(e,window.location.hash);
         window.location.hash === "#/Dashboard/index"?window.location.href = "#/Dashboard/index":history.go(-1);
     }
 
@@ -27,7 +26,6 @@ class HeaderNav extends React.Component {
     Carousel(){
         let num = this.state.num;
         let num1 = this.state.num1;
-        console.log($(".carousel-item").is(":animated"))
         if(!$(".carousel-item").is(":animated")){
             let a = Math.random()
             num1.concat(a);
@@ -44,7 +42,6 @@ class HeaderNav extends React.Component {
                 this.refresh();
                 clearTimeout(setT)
             },220);
-            console.log(num1,num)
         }else {
             let setT = setTimeout(()=>{
                 num1++;
@@ -69,7 +66,6 @@ class HeaderNav extends React.Component {
     refresh(){
         let num = this.state.num;
         if(num.length > 1){
-            console.log(12313);
             num.splice(0,1);
             this.setState({
                 num

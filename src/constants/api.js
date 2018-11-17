@@ -7,7 +7,9 @@ export const SEND_VERIFI_CODE = '/api/login/send_verifi_code';//获取验证码
 export const REGISTER = '/api/login/register';//注册
 export const GET_USER_INFO = 'api/user/user_info';//个人勋章列表
 export const LOGIN = '/api/login/login';//登录
+export const LOGOUT = '/api/user/logout';//登录
 export const REAL_QUOTES = '/api/quotes/real_quotes';//real_quotes
+export const OPTIONAL_LIST = '/api/quotes/optional_list';//real_quotes
 export const TARGET = '/api/quotes/target';//标的证券信息
 export const DATE_TG = '/api/quotes/date_tg';//标的合约日期列表
 export const EXEC_TG = '/api/quotes/exec_tg';//标的指定日期的合约行权价格列表
@@ -33,6 +35,9 @@ export const UPLOAD = '/api/Operation/upload';//是否自选
 export const WEITUO_KH = '/api/Operation/weituo_kh';//是否自选
 export const CHEDAN_KH = '/api/Operation/chedan_kh';//是否自选
 export const SETBANK = '/api/Operation/setbank';//是否自选
+export const WITHDRAWAL_KH = '/api/position/withdrawal_kh';//是否自选
+export const DEPOSIT_KH = '/api/position/deposit_kh';//是否自选
+export const REFLECT = '/api/pay/reflect';//是否自选
 
 
 

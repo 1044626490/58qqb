@@ -1,8 +1,8 @@
-.my-deal-wrap{
+.my-IncomeRecord-wrap{
   width: 100vw;
   height: 100vh;
   background-color: #e9e9e9;
-  .my-deal-header{
+  .my-IncomeRecord-header{
     height: 10vw;
     line-height: 10vw;
     position: relative;
@@ -28,7 +28,7 @@
       font-size: 5vw;
     }
   }
-  .deal-content-header{
+  .IncomeRecord-content-header{
     white-space: nowrap;
     height: 10vw;
     line-height: 10vw;
@@ -73,10 +73,36 @@
       text-align: center;
       background-color: white;
       margin-bottom: 3vw;
+      .ant-col-9,.ant-col-15{
+        padding-top: 2vw;
+        padding-bottom: 2vw;
+        .ant-row{
+          padding-left: 5vw;
+          text-align: left;
+          color: black;
+          height: 5vw;
+          line-height: 5vw;
+          font-size: 3vw;
+        }
+      }
+      .ant-col-15{
+        .ant-row:first-child{
+          font-size: 4vw;
+          color: deepskyblue;
+        }
+        .ant-row:last-child{
+          padding-left: 6vw;
+        }
+      }
       p{
+        text-align: left;
         margin: 0;
+        padding-left: 6vw;
         height: 6vw;
         line-height: 6vw;
+        font-size: 3vw;
+        color: red;
+        border-bottom: 1px solid #ccc;
       }
       .sale-name{
         color: red;

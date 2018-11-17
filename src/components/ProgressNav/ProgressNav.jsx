@@ -17,16 +17,13 @@ class ProgressNav extends React.Component {
     this.advancedId = "";
     this.clearanceId = "";
   }
-  componentWillMount() {
-    console.log(this.props);
-  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.stageId !== nextProps.stageId) {
       /* this.setState({
         nowStage: nextProps.stageId,
         nowStageProgress: nextProps.stageId
       });  */
-      console.log(this.props, nextProps, "123131231");
       for (let i = this.props.stageId; i <= nextProps.stageId; i++) {
         setTimeout(() => {
           this.setState({ nowStageProgress: i });

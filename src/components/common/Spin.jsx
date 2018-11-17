@@ -23,10 +23,6 @@ class SpinLoadingContainer extends React.Component {
         }
     }
 
-    componentWillMount() {
-        // console.log(this.props, 'nextPropsSpin');
-    }
-
     componentWillReceiveProps(nextProps) {
         this.setState({
             spinning: nextProps.spin

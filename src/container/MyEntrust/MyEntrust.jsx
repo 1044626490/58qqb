@@ -1,5 +1,5 @@
 import React from "react"
-import { Icon, Button, Row, Col, DatePicker, Tabs, message } from "antd"
+import { Icon, Button, Row, Col, DatePicker, Tabs, message, Popconfirm } from "antd"
 import moment from "moment";
 import "./MyEntrust.less"
 import Api from "../../until/api"
@@ -17,16 +17,14 @@ class MyEntrust extends React.Component{
     }
 
     componentDidMount(){
-        console.log(1222233);
-        this.getMyEntrust()
+        this.getMyEntrust();
         this.getMyDeal()
     }
 
     getMyEntrust(){
         Api.wtKh().then(res => {
-            console.log(res);
             this.setState({
-                MyEntrust:res.data||[]
+                MyEntrust:res.data.khwt||[]
             })
         }).catch(err => {
             message.warning(err.msg)
@@ -36,8 +34,17 @@ class MyEntrust extends React.Component{
     getMyDeal(){
         Api.cjKh().then(res => {
             this.setState({
-                myDeal:res.data||[]
+                myDeal:res.data.khcj||[]
             })
+        }).catch(err => {
+            message.warning(err.msg)
+        })
+    }
+
+    cheDan(oid){
+        Api.cheDanKh({oid}).then(res => {
+            this.getMyEntrust();
+            message.success(res.data.msg)
         }).catch(err => {
             message.warning(err.msg)
         })
@@ -49,7 +56,7 @@ class MyEntrust extends React.Component{
                 <div className="my-entrust-header">
                     <Icon  onClick={()=>{window.history.go(-1)}} type="left" theme="outlined" />
                     <p>我的委托</p>
-                    <Icon type="sync" theme="outlined" />
+                    <Icon onClick={()=>{window.location.reload()}} type="sync" theme="outlined" />
                 </div>
                 <div className="my-entrust-content">
                     <Tabs activeKey={this.state.activeKey} onChange={(value)=>{this.setState({activeKey:value})}}>
@@ -58,20 +65,25 @@ class MyEntrust extends React.Component{
                                 this.state.MyEntrust.length?<ul>
                                     {
                                         this.state.MyEntrust.map((item, index) =>{
-                                            return <li>
-                                                <Row><Col className="sale-name" span={6}>{item.dir?"合约卖出":"合约买入"}</Col><Col span={10}>{item.inst}</Col><Col span={8}>10001500</Col></Row>
+                                            return <li key={index}>
+                                                <Row><Col className="sale-name" span={6}>{item.dir?"合约卖出":"合约买入"}</Col><Col span={9}>{item.inst}</Col><Col span={6}>{item.oid}</Col></Row>
                                                 <Row>
                                                     <Col span={6}>
                                                         <p>{item.day}</p>
                                                         <p>{item.time}</p>
                                                     </Col>
-                                                    <Col span={10}>
+                                                    <Col span={9}>
                                                         <p className="deal-price">{item.price}</p>
                                                         <p>成交均价</p>
                                                     </Col>
-                                                    <Col span={8}>
+                                                    <Col span={6}>
                                                         <p>{item.vol}</p>
                                                         <p>委托数量</p>
+                                                    </Col>
+                                                    <Col span={3} style={{height:"12vw",lineHeight:"12vw",textAlign:"left"}}>
+                                                        <Popconfirm placement="left" title={"是否要撤单"} onConfirm={()=>this.cheDan(item.oid)} okText="Yes" cancelText="No">
+                                                            <Icon type="close-circle" style={{fontSize: "4vw",color: "red"}}/>
+                                                        </Popconfirm>
                                                     </Col>
                                                 </Row>
                                             </li>
@@ -88,7 +100,7 @@ class MyEntrust extends React.Component{
                                 this.state.myDeal.length?<ul>
                                         {
                                             this.state.myDeal.map((item, index) =>{
-                                                return <li>
+                                                return <li  key={index}>
                                                     <Row><Col className="sale-name" span={6}>{item.dir?"合约卖出":"合约买入"}</Col><Col span={10}>{item.inst}</Col><Col span={8}>10001500</Col></Row>
                                                     <Row>
                                                         <Col span={6}>

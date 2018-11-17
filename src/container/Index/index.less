@@ -1,4 +1,8 @@
 .index-wrap{
+  .ant-tabs-tabpane{
+    height: 91vh;
+    overflow-y: auto;
+  }
   .ant-tabs-tabpane:nth-child(3){
     width: 100vw;
     height: 100vh;
@@ -28,6 +32,7 @@
       }
     }
     .optional-content-container{
+      margin-bottom: 30vw;
       .ant-table-thead{
         height: 8vw;
         line-height: 8vw;
@@ -194,6 +199,7 @@
         line-height: 8vw;
         height: 8vw;
         td{
+          font-size: 3.5vw;
           text-align: center;
           padding: 0;
         }
@@ -245,7 +251,7 @@
         .deal-content{
           width: 100%;
           height: 100%;
-          background-color: red;
+          background-color: #ff7d00;
           border-radius: 2vw;
           p:first-child{
             margin-bottom: 15vw;
@@ -419,6 +425,7 @@
       margin: 0;
       background-color: white;
       border-top: 0.5px solid #949494;
+      z-index: 9999;
       .ant-tabs-nav{
         width: 100vw;
         .ant-tabs-tab{

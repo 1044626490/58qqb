@@ -1,8 +1,21 @@
-.my-deal-wrap{
+.my-position-wrap{
   width: 100vw;
   height: 100vh;
   background-color: #e9e9e9;
-  .my-deal-header{
+  .no-info{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    img{
+      margin-bottom: 3vw;
+    }
+    p{
+      text-align: center;
+      font-size: 3vw;
+    }
+  }
+  .my-position-header{
     height: 10vw;
     line-height: 10vw;
     position: relative;
@@ -28,51 +41,39 @@
       font-size: 5vw;
     }
   }
-  .deal-content-header{
+  .my-position-content{
     white-space: nowrap;
     height: 10vw;
     line-height: 10vw;
     width: 100vw;
     background-color: white;
-    p{
-      white-space: normal;
-    }
-    p>span:first-child{
-      padding: 0 2vw;
-      font-size: 3vw;
-    }
-    .date-picker-wrap-content{
-
-      display: inline-block;
-      width: 67vw;
-    }
-    .ant-calendar-picker{
-      width: 32vw;
-      .ant-calendar-picker-input{
-        height: 6vw;
-        line-height: 6vw;
-        border-radius: 3vw;
+    .ant-tabs-content{
+      .ant-tabs-tabpane{
+        text-align: center;
       }
-    }
-    .ant-btn{
-      width: 15vw;
-      height: 6vw;
-      line-height: 6vw;
-      color: red;
-      border: 1px solid red;
-      border-radius: 3vw;
-      padding: 0;
-      text-align: center;
-
     }
   }
   ul{
     list-style: none;
     padding: 0;
     li{
-      text-align: center;
       background-color: white;
       margin-bottom: 3vw;
+      .ant-row{
+        text-align: center;
+      }
+      .first-Row{
+        height: 9vw;
+        line-height: 9vw;
+      }
+      .last-Row{
+        padding-left: 0;
+        .ant-col-6{
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+      }
       p{
         margin: 0;
         height: 6vw;

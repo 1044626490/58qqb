@@ -22,7 +22,7 @@ class Login extends React.Component {
                     message:"请输入用户账号",
                     placeholder:"用户账号",
                     before:<Icon className="before-icon" type="user" theme="outlined" />,
-                    re:/^1[34578]\d{9}$/,
+                    re:/^1[345789]\d{9}$/,
                     isOk:"",
                 },
                 {
@@ -32,6 +32,7 @@ class Login extends React.Component {
                     message:"请输入用户密码",
                     placeholder:"用户密码",
                     isOk:"",
+                    re:/^\d{6,12}$/,
                     before:<Icon className="before-icon" type="lock" theme="outlined" />
                 }
             ]
@@ -77,7 +78,6 @@ class Login extends React.Component {
             message.success(res.msg)
             window.location.href = "#/Dashboard/index"
         }).catch((err) => {
-            console.log(err)
             message.error(err.msg)
         })
     }
@@ -90,7 +90,8 @@ class Login extends React.Component {
                 </div>
                 <div className="app-icon">
                     <img src="" alt=""/>
-                    <p><span>58</span>期权宝</p>
+                    {/*<p><span>58</span>期权宝</p>*/}
+                    <p>交易秀</p>
                 </div>
                 <Form>
                     {

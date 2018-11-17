@@ -27,34 +27,29 @@ class StockPage extends React.Component{
             bidInfo:{},
             isMine:0,
             value:"0",
-            num:1
+            num:1,
+            price:0,
+            canBeFlat:0
         }
     }
 
     componentDidMount(){
         let id = this.props.match.params.id;
         let dates = this.props.match.params.date;
-        Api.smdTg({id,date:dates}).then(res => {
-            this.setState({
-                bidInfo:res.data
-            });
-            console.log(res);
-        }).catch(err =>{
-            console.log(err)
-        })
-        Api.optional({id}).then(res => {
-            this.setState({
-                isMine:res.data.is_optional
-            })
-        }).catch(err => {
-
-        })
+        let week = new Date().getDay();
         Api.hmdTg({id,date:dates}).then(res => {
-            console.log(res);
             localStorage.setItem("todayPrice",res.data.hmd.join(";"))
         }).catch(err =>{
-            console.log(err)
+
         })
+        Api.smdTg({id,date:dates}).then(res => {
+            this.setState({
+                bidInfo:res.data||[],
+                price:res.data.lp
+            });
+        }).catch(err =>{
+        })
+        this.getMyOptional()
         if(id&&dates){
             this.setState({
                 id,
@@ -79,8 +74,8 @@ class StockPage extends React.Component{
             date1 = today+72000000-84600000;
         }
         let data = [];
-        let storage = localStorage.getItem("todayPrice").split(";");
-        if(now/1000 > 19800||now/1000 < 0){
+        let storage = localStorage.getItem("todayPrice").split(";")||[];
+        if(now/1000 > 0||now/1000 < -54000){
             for (let i = -4800; i <= 0; i += 1) {
                 data.push({
                     x: date + i * 4125,
@@ -88,17 +83,16 @@ class StockPage extends React.Component{
                 });
             }
         }else {
-            for(let i = -now/1000; i<=0;i++){
+            for(let i = -(now/4125).toFixed(0)-1; i<=0;i++){
                 data.push({
                     x: date + i * 4125,
-                    y: storage[i+now/1000]
+                    y: storage[i+now/4125]
                 });
             }
         }
         this.setI = setInterval(()=>{
             let  count = 0;
-            // console.log(data);
-            if(now/1000 > 19800||now/1000 < 0){
+            if(now/1000 > 0||now/1000 < -54000){
                 if(data.length === 4801){
                     count++
                 }
@@ -116,24 +110,20 @@ class StockPage extends React.Component{
                             load: function () {
                                 let series = this.series[0],
                                     chart = this;
-                                console.log(series)
                                 let setI = setInterval(function () {
                                     let now = Date.now()-date;
                                     Api.smdTg({id,date:dates}).then(res => {
-                                        console.log(res);
+                                        if(now/1000 > 0||now/1000 < -54000){
+                                            clearInterval(setI)
+                                        }else {
+                                            series.data.length = (now/4125).toFixed(0)+1;
+                                            let x = (new Date()).getTime(), // 当前时间
+                                                y = res.data.lp;          // 随机值
+                                            series.addPoint([x, y], true, true);
+                                            localStorage.setItem("todayPrice",series)
+                                        }
                                     }).catch(err =>{
-                                        console.log(err)
                                     })
-                                    if(now/1000 > 19800||now/1000 < 0){
-                                        clearInterval(setI)
-                                    }else {
-                                        series.data.length = now/1000;
-                                        let x = (new Date()).getTime(), // 当前时间
-                                            y = -0.5;          // 随机值
-                                        series.addPoint([x, y], true, true);
-                                        console.log(Date.now(),series.data)
-                                        localStorage.setItem("todayPrice",series)
-                                    }
                                     // activeLastPointToolip(chart);
                                 }, 4125);
                             }
@@ -169,7 +159,7 @@ class StockPage extends React.Component{
                         inputEnabled : false
                     },
                     tooltip: {
-                        formatter: function () {
+                        formatter: function (){
                             return '<b>' + this.series.name + '</b><br/>' +
                                 Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
                                 Highcharts.numberFormat(this.y, 2);
@@ -192,6 +182,17 @@ class StockPage extends React.Component{
         },1000)
     }
 
+    getMyOptional(){
+        Api.optional({id:this.state.id}).then(res => {
+            this.setState({
+                isMine:res.data.is_optional,
+                canBeFlat:res.data.can_be_flat
+            })
+        }).catch(err => {
+
+        })
+    }
+
     componentWillUnmount(){
         this.chart = null;
         clearInterval(this.setI)
@@ -200,14 +201,29 @@ class StockPage extends React.Component{
     editOptional(){
         Api.editOptional({id:this.state.id}).then(res => {
             message.success(res.msg)
+            this.getMyOptional()
         }).catch(err =>{
             message.warning(err.msg)
         })
     }
 
+    weiTuoKh(dir){
+        let params = {
+            inst:this.state.id,
+            dir,
+            of:dir,
+            vol:this.state.num,
+            price:this.state.price
+        };
+        Api.weiTuoKh(params).then(res =>{
+            message.success(res.data.msg)
+        }).catch(err => {
+            message.warning(err.data.msg)
+        })
+    }
+
     render(){
-        console.log(this.state.bidInfo)
-        const values = ["5","10","15","20","25","30"]
+        const values = [5,10,15,20,25,30]
         return(
             <div className="stock-page-wrap">
                 <div className="stock-page-header">
@@ -248,14 +264,18 @@ class StockPage extends React.Component{
                     <div className="price-control">
                         <Row>
                             <Col span={6}><span>委托价格</span></Col>
-                            <Col span={18}><Button className="add-cut"></Button><span className="add-value-cut">{this.state.bidInfo.id?this.state.bidInfo.lp:0}</span><Button className="add-cut"></Button></Col>
+                            <Col span={18}>
+                                <Button onClick={()=>{this.setState({price:this.state.price - 0.0001})}} className="add-cut"></Button>
+                                <span key={Math.random()} className="add-value-cut">{this.state.price.toFixed(4)}</span>
+                                <Button onClick={()=>{this.setState({price:this.state.price + 0.0001})}} className="add-cut"></Button>
+                            </Col>
                         </Row>
                         <Row>
-                            <RadioGroup onChange={(value)=>{this.setState({value:value.target.value})}} value={this.state.value}>
+                            <RadioGroup onChange={(value)=>{this.setState({num:value.target.value})}} value={this.state.num}>
                                 {
                                     values.map((item, index) => {
                                         return <Col span={4} key={index}>
-                                            <RadioButton className={this.state.value === item?"isChecked":""} value={item}>{item}</RadioButton>
+                                            <RadioButton className={this.state.num === item?"isChecked":""} value={item}>{item}</RadioButton>
                                         </Col>
                                     })
                                 }
@@ -265,19 +285,19 @@ class StockPage extends React.Component{
                             <Col span={6}><span>交易数量</span></Col>
                             <Col span={18}>
                                 <Button onClick={()=>{this.setState({num:--this.state.num})}} className="add-cut"></Button>
-                                <span className="add-value-cut">{this.state.num}</span>
+                                <span key={Math.random()} className="add-value-cut">{this.state.num}</span>
                                 <Button onClick={()=>{this.setState({num:++this.state.num})}} className="add-cut"></Button>
                             </Col>
                         </Row>
                         <Row>
-                            <Col span={6}><span>持仓数量</span></Col>
-                            <Col span={18}><span>0</span></Col>
+                            <Col span={6}><span>可平数量</span></Col>
+                            <Col span={18}><span key={Math.random()}>{this.state.canBeFlat}</span></Col>
                         </Row>
                     </div>
                     <Row className="operation-button">
-                        <Col span={6}><Button>买入</Button></Col>
-                        <Col span={12}><Button onClick={()=>this.editOptional()}>{this.state.isMine?"删除自选":"添加自选"}</Button></Col>
-                        <Col span={6}><Button>卖出</Button></Col>
+                        <Col span={6}><Button onClick={()=>this.weiTuoKh(0)}>开仓</Button></Col>
+                        <Col span={12}><Button key={Math.random()} onClick={()=>this.editOptional()}>{this.state.isMine === 1?"删除自选":"添加自选"}</Button></Col>
+                        <Col span={6}><Button onClick={()=>this.weiTuoKh(1)}>平仓</Button></Col>
                     </Row>
                 </div>
             </div>

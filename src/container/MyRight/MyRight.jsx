@@ -1,6 +1,7 @@
 import React from "react"
 import { Icon, Button, Row, Col } from "antd"
 import "./MyRight.less"
+import connect from "react-redux/es/connect/connect";
 
 class MyRight extends React.Component{
     constructor(props) {
@@ -19,15 +20,15 @@ class MyRight extends React.Component{
                 </div>
                 <div className="my-right-container">
                     <div className="content-top">
-                        <p>￥977.00</p>
+                        <p>￥{this.props.userInfo.data.aval.toFixed(2)}</p>
                         <Row>
-                            <Col span={8}><Button>充值</Button></Col>
+                            <Col span={8}><Button onClick={()=>{window.location.href = "#/Dashboard/RechargeAndExpend/0"}}>充值</Button></Col>
                             <Col span={8}></Col>
-                            <Col span={8}><Button>提现</Button></Col>
+                            <Col span={8}><Button onClick={()=>{window.location.href = "#/Dashboard/RechargeAndExpend/1"}}>提现</Button></Col>
                         </Row>
                     </div>
                     <div>
-                        <p className="water-gold">
+                        <p className="water-gold" onClick={()=>{window.location.href = "#/Dashboard/IncomeRecord"}}>
                             <span>权益金流水</span>
                             <Icon type="right" theme="outlined" />
                         </p>
@@ -38,4 +39,10 @@ class MyRight extends React.Component{
     }
 }
 
-export default MyRight
+
+const mapStateToProps = state => {
+    const {userInfo} = state;
+    return {userInfo}
+};
+export default connect(mapStateToProps)(MyRight)
+// export default MyRight

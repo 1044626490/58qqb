@@ -1,8 +1,21 @@
-.my-deal-wrap{
+.my-money-record-wrap{
   width: 100vw;
   height: 100vh;
   background-color: #e9e9e9;
-  .my-deal-header{
+  .no-info{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    img{
+      margin-bottom: 3vw;
+    }
+    p{
+      text-align: center;
+      font-size: 3vw;
+    }
+  }
+  .my-money-record-header{
     height: 10vw;
     line-height: 10vw;
     position: relative;
@@ -28,42 +41,16 @@
       font-size: 5vw;
     }
   }
-  .deal-content-header{
+  .my-money-record-content{
     white-space: nowrap;
     height: 10vw;
     line-height: 10vw;
     width: 100vw;
     background-color: white;
-    p{
-      white-space: normal;
-    }
-    p>span:first-child{
-      padding: 0 2vw;
-      font-size: 3vw;
-    }
-    .date-picker-wrap-content{
-
-      display: inline-block;
-      width: 67vw;
-    }
-    .ant-calendar-picker{
-      width: 32vw;
-      .ant-calendar-picker-input{
-        height: 6vw;
-        line-height: 6vw;
-        border-radius: 3vw;
+    .ant-tabs-content{
+      .ant-tabs-tabpane{
+        text-align: center;
       }
-    }
-    .ant-btn{
-      width: 15vw;
-      height: 6vw;
-      line-height: 6vw;
-      color: red;
-      border: 1px solid red;
-      border-radius: 3vw;
-      padding: 0;
-      text-align: center;
-
     }
   }
   ul{
@@ -73,10 +60,36 @@
       text-align: center;
       background-color: white;
       margin-bottom: 3vw;
+      .ant-col-9,.ant-col-15{
+        padding-top: 2vw;
+        padding-bottom: 2vw;
+        .ant-row{
+          padding-left: 5vw;
+          text-align: left;
+          color: black;
+          height: 5vw;
+          line-height: 5vw;
+          font-size: 3vw;
+        }
+      }
+      .ant-col-15{
+        .ant-row:first-child{
+          font-size: 4vw;
+          color: deepskyblue;
+        }
+        .ant-row:last-child{
+          padding-left: 6vw;
+        }
+      }
       p{
+        text-align: left;
         margin: 0;
+        padding-left: 6vw;
         height: 6vw;
         line-height: 6vw;
+        font-size: 3vw;
+        color: red;
+        border-bottom: 1px solid #ccc;
       }
       .sale-name{
         color: red;
