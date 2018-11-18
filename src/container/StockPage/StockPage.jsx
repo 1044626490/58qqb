@@ -69,13 +69,13 @@ class StockPage extends React.Component{
         let date = today+54000000;
         let now = Date.now()-date;
         let date1 = today+72000000;
-        if(now/1000 < 0){
+        if(now/1000 < -18000){
             date = today+54000000-8460000;
             date1 = today+72000000-84600000;
         }
         let data = [];
         let storage = localStorage.getItem("todayPrice").split(";")||[];
-        if(now/1000 > 0||now/1000 < -54000){
+        if(week === 0||week === 6){
             for (let i = -4800; i <= 0; i += 1) {
                 data.push({
                     x: date + i * 4125,
@@ -83,16 +83,25 @@ class StockPage extends React.Component{
                 });
             }
         }else {
-            for(let i = -(now/4125).toFixed(0)-1; i<=0;i++){
-                data.push({
-                    x: date + i * 4125,
-                    y: storage[i+now/4125]
-                });
+            if(now/1000 > 0||now/1000 < -18000){
+                for (let i = -4800; i <= 0; i += 1) {
+                    data.push({
+                        x: date + i * 4125,
+                        y: storage[i+4800]/1
+                    });
+                }
+            }else {
+                for(let i = -(now/4125).toFixed(0)-1; i<=0;i++){
+                    data.push({
+                        x: date + i * 4125,
+                        y: storage[i+now/4125]
+                    });
+                }
             }
         }
         this.setI = setInterval(()=>{
             let  count = 0;
-            if(now/1000 > 0||now/1000 < -54000){
+            if(now/1000 > 0||now/1000 < -18000||week === 6 ||week === 0){
                 if(data.length === 4801){
                     count++
                 }
@@ -113,7 +122,7 @@ class StockPage extends React.Component{
                                 let setI = setInterval(function () {
                                     let now = Date.now()-date;
                                     Api.smdTg({id,date:dates}).then(res => {
-                                        if(now/1000 > 0||now/1000 < -54000){
+                                        if(now/1000 > 0||now/1000 < -18000||week === 6 ||week === 0){
                                             clearInterval(setI)
                                         }else {
                                             series.data.length = (now/4125).toFixed(0)+1;
